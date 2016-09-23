@@ -38,7 +38,7 @@ namespace EK
 
 
         // Use this for initialization
-        void Awake()
+        void Start()
         {
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody>();

@@ -52,7 +52,6 @@ namespace EK
             _cardinalRefs.Add(CardinalDirection.Left, _cardinalRefs[CardinalDirection.Down] * Quaternion.Euler(0, 90, 0));
             _cardinalRefs.Add(CardinalDirection.Right, _cardinalRefs[CardinalDirection.Down] * Quaternion.Euler(0, -90, 0));
 
-
             _stateController = stateController;
             _transform = _stateController.getTransform();
             _rigidbody = _stateController.getRigidbody();
@@ -104,13 +103,18 @@ namespace EK
             {
                 //if (_stateController.CanStandUp())
                     _stateController.StandUp();
+                    _stateController.isCrouching = false;
                 //else
                 //    return;
             }
             else
+            {
                 _stateController.StandDown();
+                _stateController.isCrouching = true;
+            }
+                
 
-            _stateController.isCrouching = !_stateController.isCrouching;
+            //_stateController.isCrouching = !_stateController.isCrouching;
             _animator.SetBool("OnCrouching", _stateController.isCrouching);
         }
 
