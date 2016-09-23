@@ -4,6 +4,7 @@ using System.Collections;
 
 namespace EK
 {
+    public enum EKState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling }
 
     public class StateController : MonoBehaviour
     {
@@ -19,6 +20,7 @@ namespace EK
         public IEKState currentState;
 
         public CardinalDirection state;
+        public EKState ekState = EKState.Idle;
 
 
         private float _capsuleHeight = 0.0f;
@@ -38,12 +40,15 @@ namespace EK
 
 
         // Use this for initialization
-        void Start()
+        void Awake()
         {
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
             _capsuleCollider = GetComponent<CapsuleCollider>();
+
+            InitializeStateMachineBehaviours();
+
             _capsuleHeight = _capsuleCollider.height;
             _capsuleCenter = _capsuleCollider.center;
             this.defaultMovimentState = new DefaultMovimentState(this);
@@ -110,6 +115,17 @@ namespace EK
             this.axisRaw = _transform.InverseTransformDirection(directionRaw);
             this.currentState.OnMovimentController(axis);
         }
+
+
+        private void InitializeStateMachineBehaviours()
+        {
+            _animator.GetBehaviour<StandingBehaviour>().controller = this;
+            _animator.GetBehaviour<CrouchingBehaviour>().controller = this;
+            _animator.GetBehaviour<CrouchedBehaviour>().controller = this;
+            _animator.GetBehaviour<FallingBehaviour>().controller = this;
+            _animator.GetBehaviour<RuningBehaviour>().controller = this;
+        }
+
 
 
         public Transform getTransform()

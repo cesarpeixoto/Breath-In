@@ -32,6 +32,9 @@ namespace EK
         private float _elapsedTime = 0.0f;
         private const float _animRotateDuration = 0.6f;
 
+        // Variáveis de auxilio
+        private bool moveCondition = false;
+
         // Referência dos componentes externos.
         private Transform _transform;
         private Rigidbody _rigidbody;
@@ -63,8 +66,10 @@ namespace EK
         public void OnMovimentController(Vector3 direction)
         {
 
-            bool temp = _animator.GetCurrentAnimatorStateInfo(0).IsName("hard_landing");
-            if (_stateController.isGrounded && !temp)
+            moveCondition = _stateController.ekState != EKState.Crouching && _stateController.ekState != EKState.Standing &&
+                            _stateController.ekState != EKState.Falling;
+
+            if (_stateController.isGrounded && moveCondition)
             {
                 direction = direction.normalized;
                 SetCardinalDirection(direction);
