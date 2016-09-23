@@ -12,13 +12,11 @@ namespace EK
         // Flags de estados
         public bool isGrounded = true;
         public bool isCrouching = false;
-        public bool isFalling = false;
         public Vector3 axis = Vector3.zero;
         public Vector3 axisRaw = Vector3.zero;
 
         [SerializeField]
         public IEKState currentState;
-
         public CardinalDirection state;
         public EKState ekState = EKState.Idle;
 
