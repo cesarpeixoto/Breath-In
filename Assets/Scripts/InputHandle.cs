@@ -63,7 +63,7 @@ public class InputHandle : MonoBehaviour
             //_moviment.OnJump();
             _stateController.currentState.OnJumpController();
         }
-        else if (Input.GetAxis("Fire1") != 0)
+        else if (Input.GetButtonDown("Fire1"))        
         {
             _stateController.currentState.OnCrouchingController();
         }
