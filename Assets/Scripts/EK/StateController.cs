@@ -8,6 +8,8 @@ namespace EK
 
     public class StateController : MonoBehaviour
     {
+        public delegate void InteractiveHandle(EK.StateController controller) ;
+        public event InteractiveHandle Interaction;
 
         // Flags de estados
         public bool isGrounded = true;
@@ -46,6 +48,11 @@ namespace EK
             _capsuleCenter = _capsuleCollider.center;
             this.defaultMovimentState = new DefaultMovimentState(this);
             this.currentState = this.defaultMovimentState;
+        }
+
+        public void OnActionController()
+        {
+            Interaction(this);
         }
 
         // Update is called once per frame
