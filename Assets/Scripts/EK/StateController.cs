@@ -4,12 +4,13 @@ using System.Collections;
 
 namespace EK
 {
-    public enum EKState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling }
+    public enum EKSubState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling }
 
     public class StateController : MonoBehaviour
     {
         public delegate void InteractiveHandle(EK.StateController controller) ;
-        public event InteractiveHandle Interaction;
+        public InteractiveHandle Interaction;
+        //public event InteractiveHandle Interaction;
 
         // Flags de estados
         public bool isGrounded = true;
@@ -19,8 +20,8 @@ namespace EK
 
         [SerializeField]
         public IEKState currentState;
-        public CardinalDirection state;
-        public EKState ekState = EKState.Idle;
+        public CardinalDirection cardinalState;
+        public EKSubState ekState = EKSubState.Idle;
 
 
         private float _capsuleHeight = 0.0f;
@@ -36,6 +37,9 @@ namespace EK
 
         [HideInInspector]
         public DefaultMovimentState defaultMovimentState;
+        public DragMovimentState dragMovimentState;
+
+        // delcarar o dragMovimentState aqui!!!!
         
         // Use this for initialization
         void Awake()
@@ -48,11 +52,18 @@ namespace EK
             _capsuleCenter = _capsuleCollider.center;
             this.defaultMovimentState = new DefaultMovimentState(this);
             this.currentState = this.defaultMovimentState;
+            this.dragMovimentState = new DragMovimentState(this);
         }
 
         public void OnActionController()
         {
-            Interaction(this);
+            if(Interaction != null)
+                Interaction(this);
+            else
+            {
+                // Implementar som de que não tem ação disponível
+            }
+
         }
 
         // Update is called once per frame
@@ -96,8 +107,8 @@ namespace EK
         private void CheckGroundStatus()
         {
             RaycastHit hitInfo;
-            Vector3 offset = Vector3.up * 0.1f;
-            if (Physics.Raycast(_transform.position + offset, Vector3.down, out hitInfo, 0.1f))
+            Vector3 offset = Vector3.up * 0.5f;
+            if (Physics.Raycast(_transform.position + offset, Vector3.down, out hitInfo, 0.5f))
             {
                 this.isGrounded = true;
                 _animator.SetBool("OnGround", isGrounded);
@@ -111,12 +122,11 @@ namespace EK
         public void OnMovimentController(Vector3 direction, Vector3 directionRaw)
         {
             // aqui sempre entra
-            this.axis = _transform.InverseTransformDirection(direction);
-            this.axisRaw = _transform.InverseTransformDirection(directionRaw);
+            this.axis = direction;//_transform.InverseTransformDirection(direction);
+            this.axisRaw = directionRaw;//_transform.InverseTransformDirection(directionRaw);
             this.currentState.OnMovimentController(axis);
         }
-
-
+       
         public Transform getTransform()
         {
             return _transform;

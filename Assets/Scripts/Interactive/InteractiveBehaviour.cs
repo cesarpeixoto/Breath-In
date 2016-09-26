@@ -4,18 +4,18 @@ using System.Collections;
 public abstract class InteractiveBehaviour : MonoBehaviour
 {
 
-    public abstract void SetInteractive();
+    public abstract void SetInteractive(EK.StateController controller);
     
 
 
     // Use this for initialization
-    void Start()
+    protected virtual void Start()
     {
 
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
 
     }
