@@ -9,6 +9,8 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
     private Transform _transform = null;
     private Rigidbody _rigidbody = null;
 
+    //---------------------------------------------------------------------------------------------------------------
+    // Inicializa as referências.
     private void Awake()
     {
         _transform = GetComponent<Transform>();
@@ -16,6 +18,7 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
         _rigidbody.isKinematic = true;
     }
 
+    //---------------------------------------------------------------------------------------------------------------
     public override void SetInteractive(EK.StateController controller)
     {
         if(_controller.carryingObject != null)
@@ -27,9 +30,10 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
         _controller.carryingObject = this.gameObject;
         _controller.carryingObject.transform.SetParent(_transform);
         _controller.carryingObject.SetActive(false);
-        _controller.Interaction = null;
+       // _controller.Interaction = null;
     }
 
+    //---------------------------------------------------------------------------------------------------------------
     private void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
@@ -38,9 +42,9 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
             {
                 _controller.Interaction = null;
                 _controller = null;
-            }
-            
+            }            
         }
     }
 
+    //---------------------------------------------------------------------------------------------------------------
 }

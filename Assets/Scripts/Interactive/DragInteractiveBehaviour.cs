@@ -30,8 +30,7 @@ using System;
 
 [RequireComponent(typeof(Rigidbody))]
 public class DragInteractiveBehaviour : InteractiveBehaviour
-{
-    
+{    
     public bool activated = false;                  // Auxilio para debug.
 
     // Referência dos componentes externos.
