@@ -10,13 +10,18 @@ namespace EK
     {
         public delegate void InteractiveHandle(EK.StateController controller) ;
         public InteractiveHandle Interaction;
-        //public event InteractiveHandle Interaction;
+
+        // Referência do objeto carregado.
+        public GameObject carryingObject = null;
+
 
         // Flags de estados
         public bool isGrounded = true;
         public bool isCrouching = false;
         public Vector3 axis = Vector3.zero;
         public Vector3 axisRaw = Vector3.zero;
+
+
 
         [SerializeField]
         public IEKState currentState;
