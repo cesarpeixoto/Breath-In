@@ -19,6 +19,15 @@ public abstract class InteractiveBehaviour : MonoBehaviour
         }
     }
 
+    protected virtual void OnDestroy()
+    {
+        if(_controller != null)
+        {
+            _controller.Interaction = null;
+            _controller = null;
+        }
+    }
+
     // Use this for initialization
     protected virtual void Start()
     {

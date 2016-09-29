@@ -38,13 +38,20 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if(_controller != null)
-            {
-                _controller.Interaction = null;
+            EK.StateController controller = collision.gameObject.GetComponent<EK.StateController>();
+            controller.Interaction = null;
+            controller.carryingObject = null;
+            if (_controller != null)
                 _controller = null;
-            }            
         }
     }
 
+    //---------------------------------------------------------------------------------------------------------------
+    protected override void OnDestroy()
+    {
+        if (_controller != null)
+            _controller.carryingObject = null;
+        base.OnDestroy();
+    }
     //---------------------------------------------------------------------------------------------------------------
 }

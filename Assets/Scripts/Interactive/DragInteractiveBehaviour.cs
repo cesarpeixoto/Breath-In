@@ -55,8 +55,19 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
         _controller.currentState = _controller.dragMovimentState;                    // Atualiza maquina de estados.
         _controller.dragMovimentState.dragObject = _rigidbody;                       // Passa referência deste objeto para ser movido.
         activated = true;
+        _controller.Interaction = null;
         StartCoroutine(WaitingKeyUp());
-    }    
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            _controller = collision.gameObject.GetComponent<EK.StateController>();  // Estabelece referência do controlador de estados.
+            _controller.Interaction = SetInteractive;                               // Estabelece o callback para esta interação.
+        }
+    }
 
     //---------------------------------------------------------------------------------------------------------------
     // Encerra a interatividade, desvinculando o Player deste objeto.
@@ -77,8 +88,14 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
     // Executa a função de desvinculo, no momento em que a tecla deixar de ser pressionada.
     IEnumerator WaitingKeyUp()
     {
-        yield return new WaitUntil(() => !Input.GetButton("Fire2"));                // Aguarda até a tecla deixar de ser pressioanda.
+        yield return new WaitUntil(() => Input.GetButtonUp("Fire2"));                // Aguarda até a tecla deixar de ser pressioanda.
         UnLinkPlayer();                                                             // Executa função de desvinculo.
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    protected override void OnCollisionStay(Collision collision)
+    {
+        //base.OnCollisionStay(collision);
     }
 
     //---------------------------------------------------------------------------------------------------------------
