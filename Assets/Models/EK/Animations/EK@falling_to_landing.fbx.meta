@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 5c2bf63ac3149ce43b9726326c52cffc
-timeCreated: 1475364543
+guid: c9d32fe88096f8b45bee0a989df9202e
+timeCreated: 1475364544
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -154,8 +154,21 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
-    animationRetargetingWarnings: 
+    animationImportWarnings: "\nClip 'mixamo.com' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'mixamorig:Spine2' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n"
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'mixamo.com':\n\tLeftUpperArm
+      average position error 18.8 mm and maximum position error 35.3 mm at time 0:
+      0 (0.0%) Frame 0\n\tLeftLowerArm average position error 11.6 mm and maximum
+      position error 22.4 mm at time 0:14 (43.8%) Frame 14\n\tLeftHand average position
+      error 10.3 mm and maximum position error 21.4 mm at time 0:14 (43.8%) Frame
+      14\n\tRightUpperArm average position error 24.3 mm and maximum position error
+      35.6 mm at time 0: 0 (0.0%) Frame 0\n\tRightLowerArm average position error
+      12.5 mm and maximum position error 22.8 mm at time 0: 0 (0.0%) Frame 0\n\tRightHand
+      average position error 5.6 mm and maximum position error 14.3 mm at time 0:
+      0 (0.0%) Frame 0\n\tHead average position error 36.8 mm and maximum position
+      error 60.1 mm at time 0: 0 (0.0%) Frame 0\n"
     animationDoRetargetingWarnings: 0
     animationCompression: 3
     animationRotationError: 0.5
