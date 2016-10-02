@@ -21,8 +21,6 @@ namespace EK
         public Vector3 axis = Vector3.zero;
         public Vector3 axisRaw = Vector3.zero;
 
-
-
         [SerializeField]
         public IEKState currentState;
         public CardinalDirection cardinalState;
@@ -57,7 +55,7 @@ namespace EK
             _capsuleCenter = _capsuleCollider.center;
             this.defaultMovimentState = new DefaultMovimentState(this);
             this.currentState = this.defaultMovimentState;
-            this.dragMovimentState = new DragMovimentState(this);
+            this.dragMovimentState = new DragMovimentState(this);            
         }
 
         public void OnActionController()

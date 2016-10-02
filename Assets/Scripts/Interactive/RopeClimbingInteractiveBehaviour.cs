@@ -9,6 +9,7 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
     {
         _controller.transform.SetParent(this.transform);
         _controller.GetComponent<Rigidbody>().isKinematic = true;
+        _controller.transform.localPosition = Vector3.zero;
         _controller.transform.Translate(0, 0.1f, 0);
 
         Debug.Log("Entrou");
