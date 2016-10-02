@@ -83,7 +83,7 @@ namespace EK
                 if (isOpposedDirection(direction) && !_stateController.isGrounded)
                 {
                     _rigidbody.drag = 4f;
-                    _animator.SetBool("OnFalling", true);
+                   // _animator.SetBool("OnFalling", true); Está dando um comportamento estranho nas anins
                 }                    
         }
 
