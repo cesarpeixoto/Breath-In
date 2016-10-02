@@ -66,8 +66,8 @@ namespace EK
         public void OnMovimentController(Vector3 direction)
         {
 
-            moveCondition = _stateController.ekState != EKState.Crouching && _stateController.ekState != EKState.Standing &&
-                            _stateController.ekState != EKState.Falling;
+            moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
+                            _stateController.ekState != EKSubState.Falling;
 
             if (_stateController.isGrounded && moveCondition)
             {
@@ -75,7 +75,7 @@ namespace EK
                 SetCardinalDirection(direction);
 
                 // TODO: Retirar depois do Teste.
-                _stateController.state = _cardinalState;
+                _stateController.cardinalState = _cardinalState;
                 direction *= speed;
                 _rigidbody.velocity = direction;
             }
@@ -148,7 +148,7 @@ namespace EK
         
         //---------------------------------------------------------------------------------------------------------------
         // Retorna o ponto cardeal da direção.
-        private CardinalDirection GetCardinalDirection(Vector3 direction)
+        public CardinalDirection GetCardinalDirection(Vector3 direction)
         {
             if (direction.x > 0 && direction.z == 0)
                 return CardinalDirection.Left;
