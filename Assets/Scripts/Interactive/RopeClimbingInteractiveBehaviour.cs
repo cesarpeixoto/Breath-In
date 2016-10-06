@@ -14,10 +14,12 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     public override void SetInteractive(StateController controller)
     {
+        DeativeCapsuleCollider();
         _controller.transform.SetParent(this.transform);
         _controller.GetComponent<Rigidbody>().isKinematic = true;        
         active = true;
-        Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
+        _controller.getAnimator().SetTrigger("New Trigger");
+        //Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
         //_controller.gameObject.layer = 8;
         _controller.transform.localPosition = Vector3.zero;
         _controller.transform.Translate(0, 0.1f, 0, Space.Self);
@@ -31,24 +33,47 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         {
             float v = Input.GetAxis("Vertical") * Time.deltaTime * 0.3f;
             _controller.transform.Translate(0, v, 0, Space.Self);
+
+
         }
     }
 
-    protected override void OnCollisionStay(Collision collision)
+    //protected override void OnCollisionStay(Collision collision)
+    //{
+    //    base.OnCollisionStay(collision);
+    //    if (collision.gameObject.CompareTag("Player") && active)
+    //    {
+    //        _controller.transform.SetParent(this.transform);
+    //        Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
+    //    }
+    //}
+
+    void OnTriggerEnter(Collider other)
     {
-        base.OnCollisionStay(collision);
-        if (collision.gameObject.CompareTag("Player") && active)
+        if (other.gameObject.CompareTag("Player") && active)
         {
-            _controller.transform.SetParent(this.transform);
-            Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
-        }            
+            other.transform.SetParent(this.transform);
+            other.transform.localPosition = Vector3.zero;
+        }
+            
+
     }
+
+    void DeativeCapsuleCollider()
+    {
+        BoxCollider[] boxColliders = transform.root.GetComponentsInChildren<BoxCollider>();
+        foreach (var item in boxColliders)
+        {
+            Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), item);
+        }
+    }
+
 
 
     //protected void OnCollisionEnter(Collision collision)
     //{
-    //    if (collision.gameObject.CompareTag("Player") && active)
-    //        Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
+    //    if (collision.gameObject.CompareTag("GameController") && active)
+    //        _controller.transform.SetParent(this.transform);
     //}
 
 
