@@ -23,11 +23,32 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         _controller.getAnimator().SetTrigger("New Trigger");
         //Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
         //_controller.gameObject.layer = 8;
+
+        config(controller);
         _controller.transform.localPosition = Vector3.zero;
         _controller.transform.Translate(0, 0.1f, 0, Space.Self);
 
         Debug.Log("Entrou");
+
+        /*
+        tratar pegando o bounds do colisore ajustando os offsets para ficar legal...
+
+        */
+        // rope descer para y = -1.738
+        // meshe -1.748
+        // capsule center y = -0.83
+
     }
+
+    void config(StateController controller)
+    {
+        //controller.transform.FindChild("Rope").localPosition = new Vector3(controller.transform.FindChild("Rope").localPosition.x, -1.738f, controller.transform.FindChild("Rope").localPosition.z);
+        controller.transform.FindChild("Mesh").localPosition = new Vector3(controller.transform.FindChild("Mesh").localPosition.x, -1.748f, controller.transform.FindChild("Mesh").localPosition.z);
+        controller.GetComponent<CapsuleCollider>().center = new Vector3(controller.GetComponent<CapsuleCollider>().center.x, -0.83f, controller.GetComponent<CapsuleCollider>().center.z);
+
+    }
+
+
 
     protected override void Update()
     {
@@ -37,6 +58,10 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
             float v = Input.GetAxis("Vertical") * Time.deltaTime * 0.3f;
             _controller.transform.Translate(0, v, 0, Space.Self);
             moving = true;
+
+            float h = Input.GetAxis("Horizontal");
+            if (h != 0)
+                GetComponent<Rigidbody>().AddForce(new Vector3(-h, 0, 0));
 
         }
     }

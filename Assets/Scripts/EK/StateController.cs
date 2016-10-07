@@ -1,6 +1,15 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/*
+A questão é descer o conjunto inteiro, e deixar só o object no topo...
+Isso resolve a questão de ele subir...
 
+
+*/
+
+
+
+using UnityEngine;
+using System.Collections;
+using UnityEditor;
 
 namespace EK
 {
@@ -144,5 +153,10 @@ namespace EK
         {
             return _animator;
         }
+
+
+
+        
+
     }
 }
