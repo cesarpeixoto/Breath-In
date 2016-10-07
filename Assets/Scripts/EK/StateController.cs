@@ -110,7 +110,7 @@ namespace EK
         private void CheckGroundStatus()
         {
             RaycastHit hitInfo;
-            Vector3 offset = Vector3.up * 0.5f;
+            Vector3 offset = Vector3.up * 0.4f;
             if (Physics.Raycast(_transform.position + offset, Vector3.down, out hitInfo, 0.5f))
             {
                 this.isGrounded = true;

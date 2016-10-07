@@ -12,6 +12,8 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
     public static bool active = false;
     public SphereCollider ropectrl = null;
 
+    bool moving = false;
+
     public override void SetInteractive(StateController controller)
     {
         DeativeCapsuleCollider();
@@ -29,11 +31,12 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     protected override void Update()
     {
-        if(_controller != null && active)
+        moving = false;
+        if (_controller != null && active)
         {
             float v = Input.GetAxis("Vertical") * Time.deltaTime * 0.3f;
             _controller.transform.Translate(0, v, 0, Space.Self);
-
+            moving = true;
 
         }
     }
@@ -50,13 +53,19 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player") && active)
+        if (other.gameObject.CompareTag("GameController") && active)
         {
-            other.transform.SetParent(this.transform);
-            other.transform.localPosition = Vector3.zero;
-        }
-            
+            //if(other.transform.parent.GetComponent<Rigidbody>().velocity.y != 0)
+            //{
+                other.transform.parent.SetParent(this.transform);
+            other.transform.parent.localPosition = new Vector3(0, 0.25f, 0);//Vector3.zero;
 
+                Debug.Log("Colidiu no " + gameObject.name);
+            //}
+                
+        }
+
+        
     }
 
     void DeativeCapsuleCollider()
