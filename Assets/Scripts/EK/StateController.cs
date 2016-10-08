@@ -1,6 +1,15 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿/*
+A questão é descer o conjunto inteiro, e deixar só o object no topo...
+Isso resolve a questão de ele subir...
 
+
+*/
+
+
+
+using UnityEngine;
+using System.Collections;
+using UnityEditor;
 
 namespace EK
 {
@@ -110,7 +119,7 @@ namespace EK
         private void CheckGroundStatus()
         {
             RaycastHit hitInfo;
-            Vector3 offset = Vector3.up * 0.5f;
+            Vector3 offset = Vector3.up * 0.4f;
             if (Physics.Raycast(_transform.position + offset, Vector3.down, out hitInfo, 0.5f))
             {
                 this.isGrounded = true;
@@ -144,5 +153,10 @@ namespace EK
         {
             return _animator;
         }
+
+
+
+        
+
     }
 }
