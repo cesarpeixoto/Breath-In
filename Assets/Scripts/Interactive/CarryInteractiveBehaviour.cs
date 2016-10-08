@@ -28,7 +28,7 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
             _controller.carryingObject.SetActive(true);
         }
         _controller.carryingObject = this.gameObject;
-        _controller.carryingObject.transform.SetParent(_transform);
+        //_controller.carryingObject.transform.SetParent(_transform);
         _controller.carryingObject.SetActive(false);
        // _controller.Interaction = null;
     }

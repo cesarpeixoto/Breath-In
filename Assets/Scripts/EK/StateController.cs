@@ -21,6 +21,7 @@ namespace EK
         public InteractiveHandle Interaction;
 
         // Referência do objeto carregado.
+        [HideInInspector]
         public GameObject carryingObject = null;
 
 
