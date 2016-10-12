@@ -28,6 +28,8 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         _controller.transform.localPosition = Vector3.zero;
         _controller.transform.Translate(0, 1f, 0, Space.Self);
 
+        _controller.currentState = _controller.climbRopeMovimentState;
+
         Debug.Log("Entrou");
 
         /*
@@ -52,38 +54,38 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
     Vector3 onNodePosition = Vector3.zero;
     protected override void Update()
     {
-        moving = false;
-        if (_controller != null && active)
-        {
-            float v = Input.GetAxis("Vertical") * Time.deltaTime * 0.3f;
-            if(v != 0)
-            {
-                //Vector3 direction = (transform.localPosition - _controller.transform.localPosition).normalized * Time.deltaTime * 0.3f *-1;
-                //Vector3 direction = transform.localPosition.normalized * Time.deltaTime * 0.3f * -1;
-                //onNodePosition = _controller.transform.TransformPoint(Vector3.zero);
-                _controller.transform.Translate(0, v, 0, Space.Self);
+        //moving = false;
+        //if (_controller != null && active)
+        //{
+        //    float v = Input.GetAxis("Vertical") * Time.deltaTime * 0.3f;
+        //    if(v != 0)
+        //    {
+        //        //Vector3 direction = (transform.localPosition - _controller.transform.localPosition).normalized * Time.deltaTime * 0.3f *-1;
+        //        //Vector3 direction = transform.localPosition.normalized * Time.deltaTime * 0.3f * -1;
+        //        //onNodePosition = _controller.transform.TransformPoint(Vector3.zero);
+        //        _controller.transform.Translate(0, v, 0, Space.Self);
                 
-                //onNodePosition.y = _controller.transform.position.y;
-                float temp = _controller.transform.position.y;
-                _controller.transform.localPosition = Vector3.zero;
-                //float temp = v * Time.deltaTime;// * 0.3f;
-                //Vector3 pos = new Vector3(transform.position.x, _controller.transform.position.y + temp, transform.position.z);
-                Vector3 pos = new Vector3(_controller.transform.position.x, temp, _controller.transform.position.z);
+        //        //onNodePosition.y = _controller.transform.position.y;
+        //        float temp = _controller.transform.position.y;
+        //        _controller.transform.localPosition = Vector3.zero;
+        //        //float temp = v * Time.deltaTime;// * 0.3f;
+        //        //Vector3 pos = new Vector3(transform.position.x, _controller.transform.position.y + temp, transform.position.z);
+        //        Vector3 pos = new Vector3(_controller.transform.position.x, temp, _controller.transform.position.z);
 
-                //_controller.transform.position = onNodePosition;// pos;
-                _controller.transform.position = pos;
-            }
+        //        //_controller.transform.position = onNodePosition;// pos;
+        //        _controller.transform.position = pos;
+        //    }
 
-            //_controller.transform.localPosition = new Vector3(transform.localPosition.x, _controller.transform.localPosition.y +0.1f, transform.localPosition.z);
+        //    //_controller.transform.localPosition = new Vector3(transform.localPosition.x, _controller.transform.localPosition.y +0.1f, transform.localPosition.z);
 
-            //_controller.transform.localPosition = new Vector3(0, _controller.transform.localPosition.y, 0);
-            moving = true;
+        //    //_controller.transform.localPosition = new Vector3(0, _controller.transform.localPosition.y, 0);
+        //    moving = true;
 
-            float h = Input.GetAxis("Horizontal");
-            if (h != 0)
-                GetComponent<Rigidbody>().AddForce(new Vector3(-h, 0, 0));
+        //    float h = Input.GetAxis("Horizontal");
+        //    if (h != 0)
+        //        GetComponent<Rigidbody>().AddForce(new Vector3(-h, 0, 0));
 
-        }
+        //}
     }
 
     //protected override void OnCollisionStay(Collision collision)
@@ -98,20 +100,8 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        // passar o shperecollider
         if (other.gameObject.CompareTag("GameController") && active)
-        {
-            //if(other.transform.parent.GetComponent<Rigidbody>().velocity.y != 0)
-            //{
-            other.transform.parent.SetParent(this.transform);
-            //other.transform.parent.localPosition = new Vector3(0, 0.25f, 0);//Vector3.zero;
-
-                Debug.Log("Colidiu no " + gameObject.name);
-            //}
-                
-        }
-
-        
+            other.transform.parent.GetComponent<StateController>().currentState.OnTriggerEnter(this.GetComponent<SphereCollider>());        
     }
 
     void DeativeCapsuleCollider()

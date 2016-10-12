@@ -14,36 +14,38 @@ public class ClimbRopeMovimentState : IEKState
     private Vector3 _inNodePosition = Vector3.zero;
     private float _inNodeY = 0.0f;
 
+    private Transform _transform = null;
+
     //---------------------------------------------------------------------------------------------------------------
     // Construtor base.
     public ClimbRopeMovimentState(StateController stateController)
     {
         _stateController = stateController;
+        _transform = stateController.getTransform();
     }
 
     //---------------------------------------------------------------------------------------------------------------
     public void OnMovimentController(Vector3 direction)
     {
-        _direction = direction.y >= 0 ? 1f : -1f;                                       // Estabelece a direção do movimento.
-        if(direction.y != 0)                                                            // Move o player no sentido vertical.
+        if(direction.z != 0)                                                            // Move o player no sentido vertical.
         {
-            direction.y *= Time.deltaTime * _speed;
-            _stateController.getTransform().Translate(0, direction.y, 0, Space.Self);
-            _inNodeY = _stateController.getTransform().position.y;                      // Armazena posição global no eixo Y pós movimento.
-            _stateController.getTransform().localPosition = Vector3.zero;               // Armazena posição global, no centro do node.
-            _inNodePosition = _stateController.getTransform().position;
+            direction.z *= Time.deltaTime * _speed * -1f;
+            _transform.Translate(0, direction.z, 0, Space.Self);
+            _inNodeY = _transform.position.y;                                           // Armazena posição global no eixo Y pós movimento.
+            _transform.localPosition = Vector3.zero;                                    // Armazena posição global, no centro do node.
+            _inNodePosition = _transform.position;
             _inNodePosition.y = _inNodeY;
-            _stateController.getTransform().position = _inNodePosition;                 // Atualiza a posição global.
+            _transform.position = _inNodePosition;                                      // Atualiza a posição global.
         }            
         if(direction.x != 0)
-            this.ropeNode.AddForce(new Vector3(direction.x, 0, 0));                     // impõe forca no node da corda para balança-la.
+            this.ropeNode.AddForce(new Vector3(direction.x * 15f, 0, 0));                // impõe forca no node da corda para balança-la.
     }
 
     //---------------------------------------------------------------------------------------------------------------
     public void OnTriggerEnter(Collider collider)
     {
-        _stateController.getTransform().SetParent(collider.transform);
-        //_stateController.getTransform().localPosition = new Vector3(0, 0.25f, 0);
+        _transform.SetParent(collider.transform);
+        ropeNode = collider.GetComponent<Rigidbody>();
     }
 
     //---------------------------------------------------------------------------------------------------------------

@@ -36,7 +36,6 @@ namespace EK
         public CardinalDirection cardinalState;
         public EKSubState ekState = EKSubState.Idle;
 
-
         private float _capsuleHeight = 0.0f;
         private Vector3 _capsuleCenter = Vector3.zero;
         private float _crouchCapsuleHeight = 1.30f;
@@ -51,9 +50,10 @@ namespace EK
         [HideInInspector]
         public DefaultMovimentState defaultMovimentState;
         public DragMovimentState dragMovimentState;
+        public ClimbRopeMovimentState climbRopeMovimentState;
 
         // delcarar o dragMovimentState aqui!!!!
-        
+
         // Use this for initialization
         void Awake()
         {
@@ -65,7 +65,8 @@ namespace EK
             _capsuleCenter = _capsuleCollider.center;
             this.defaultMovimentState = new DefaultMovimentState(this);
             this.currentState = this.defaultMovimentState;
-            this.dragMovimentState = new DragMovimentState(this);            
+            this.dragMovimentState = new DragMovimentState(this);
+            this.climbRopeMovimentState = new ClimbRopeMovimentState(this);     
         }
 
         public void OnActionController()
