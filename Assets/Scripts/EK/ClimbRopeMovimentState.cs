@@ -38,7 +38,8 @@ public class ClimbRopeMovimentState : IEKState
             _transform.position = _inNodePosition;                                      // Atualiza a posição global.
         }            
         if(direction.x != 0)
-            this.ropeNode.AddForce(new Vector3(direction.x * 15f, 0, 0));                // impõe forca no node da corda para balança-la.
+            if(this.ropeNode)
+                this.ropeNode.AddForce(new Vector3(direction.x * 15f, 0, 0));                // impõe forca no node da corda para balança-la.
     }
 
     //---------------------------------------------------------------------------------------------------------------

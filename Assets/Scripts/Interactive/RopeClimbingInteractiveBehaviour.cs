@@ -20,7 +20,7 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         _controller.transform.SetParent(this.transform);
         _controller.GetComponent<Rigidbody>().isKinematic = true;        
         active = true;
-        _controller.getAnimator().SetTrigger("New Trigger");
+        _controller.getAnimator().SetBool("OnClimbRope", true);
         //Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
         //_controller.gameObject.layer = 8;
 
