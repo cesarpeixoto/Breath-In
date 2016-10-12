@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 79879113edcb50b4cada86c5ab3b7c9a
-timeCreated: 1475364544
+guid: d4bc72c87a2c02f43a2ce7820fe2cd2e
+timeCreated: 1476284256
 licenseType: Pro
 ModelImporter:
   serializedVersion: 19
@@ -141,7 +141,7 @@ ModelImporter:
     400130: mixamorig:Spine
     400132: mixamorig:Spine1
     400134: mixamorig:Spine2
-    7400000: pushing
+    7400000: pull_heavy_object_inPlace
     9500000: //RootNode
   materials:
     importMaterials: 1
@@ -160,7 +160,7 @@ ModelImporter:
       and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 3
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -168,10 +168,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     clipAnimations:
     - serializedVersion: 16
-      name: pushing
+      name: pull_heavy_object_inPlace
       takeName: mixamo.com
       firstFrame: 0
-      lastFrame: 80
+      lastFrame: 33
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -182,7 +182,7 @@ ModelImporter:
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
-      loopBlendPositionXZ: 1
+      loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0

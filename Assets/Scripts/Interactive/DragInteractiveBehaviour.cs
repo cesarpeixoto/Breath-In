@@ -57,6 +57,7 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
         activated = true;
         _controller.Interaction = null;
         StartCoroutine(WaitingKeyUp());
+        _controller.getAnimator().SetBool("OnDrag", true);
     }
 
     //---------------------------------------------------------------------------------------------------------------
