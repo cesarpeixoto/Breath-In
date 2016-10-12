@@ -79,6 +79,7 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
             _controller.Interaction = null;                                         // Estabelece o callback como null.
             _controller.currentState = _controller.defaultMovimentState;            // Estabelece o estado para default.
             _controller.dragMovimentState.dragObject = null;                        // Estabelece a referência do objeto para null.
+            _controller.getAnimator().SetBool("OnDrag", false);                     // TALVEZ ISSO DEVA SAIR DAQUI E PASSAR PARA STATUS.
             _controller = null;                                                     // Estabelece a referência do controlador de estados para null.
             _rigidbody.isKinematic = true;                                          // Estabelece o objeto como Kinematic.
             activated = false;                                                      // Para debug.

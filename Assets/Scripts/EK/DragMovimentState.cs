@@ -13,6 +13,8 @@ namespace EK
         private CardinalDirection _forwardDirection;
         private float speed = 2f;
 
+        private Vector2 moviment = Vector2.zero;
+
         // Referência dos componentes externos.
         private Transform _transform;
         private Rigidbody _rigidbody;
@@ -83,7 +85,13 @@ namespace EK
 
         public void Update()
         {
-            
+            moviment.x = Input.GetAxisRaw("Horizontal");
+            moviment.y = Input.GetAxisRaw("Vertical");
+
+            if (_stateController.cardinalState == CardinalDirection.Right || _stateController.cardinalState == CardinalDirection.Up)
+                moviment *= -1;
+            _animator.SetFloat("InputX", moviment.x, 0.1f, Time.deltaTime);
+            _animator.SetFloat("InputZ", moviment.y, 0.1f, Time.deltaTime);
         }
     }
 

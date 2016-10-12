@@ -38,8 +38,7 @@ public class InputHandle : MonoBehaviour
         _horizontalRaw = Input.GetAxis("Horizontal");
         _verticalRaw = Input.GetAxis("Vertical");
 
-        _stateController.getAnimator().SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
-        _stateController.getAnimator().SetFloat("InputZ", Input.GetAxisRaw("Vertical"), 0.1f, Time.deltaTime);
+        
 
         //float temp = Input.GetAxisRaw("Horizontal");
 

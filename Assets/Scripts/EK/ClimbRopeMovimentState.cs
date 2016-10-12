@@ -15,6 +15,7 @@ public class ClimbRopeMovimentState : IEKState
     private float _inNodeY = 0.0f;
 
     private Transform _transform = null;
+    private Animator _animator = null;
 
     //---------------------------------------------------------------------------------------------------------------
     // Construtor base.
@@ -22,6 +23,7 @@ public class ClimbRopeMovimentState : IEKState
     {
         _stateController = stateController;
         _transform = stateController.getTransform();
+        _animator = stateController.getAnimator();
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -52,6 +54,8 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void Update()
     {
+        _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
+        _animator.SetFloat("InputZ", Input.GetAxisRaw("Vertical"), 0.1f, Time.deltaTime);
     }
 
     //---------------------------------------------------------------------------------------------------------------

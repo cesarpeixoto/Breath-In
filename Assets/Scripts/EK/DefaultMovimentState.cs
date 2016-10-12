@@ -143,7 +143,8 @@ namespace EK
 
         public void Update()
         {
-            //throw new NotImplementedException();
+            _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
+            _animator.SetFloat("InputZ", Input.GetAxisRaw("Vertical"), 0.1f, Time.deltaTime);
         }
         
         //---------------------------------------------------------------------------------------------------------------
