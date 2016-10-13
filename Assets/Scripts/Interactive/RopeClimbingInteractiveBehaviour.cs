@@ -54,6 +54,20 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
     Vector3 onNodePosition = Vector3.zero;
     protected override void Update()
     {
+        if (Input.GetButtonDown("Fire2") && active)
+        {
+            active = false;
+            _controller.Interaction = null;
+            _controller.transform.SetParent(this.transform);
+            _controller.climbOffset = Vector3.zero;
+            _controller.climbRopeMovimentState.ropeNode = null;
+            _controller.getTransform().rotation = Quaternion.Euler(Vector3.zero);
+            _controller.getAnimator().SetBool("OnClimbRope", false);
+            _controller.GetComponent<Rigidbody>().isKinematic = false;
+            _controller.currentState = _controller.defaultMovimentState;
+            DeativeCapsuleCollider(false);
+        }
+
         //moving = false;
         //if (_controller != null && active)
         //{
@@ -64,7 +78,7 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         //        //Vector3 direction = transform.localPosition.normalized * Time.deltaTime * 0.3f * -1;
         //        //onNodePosition = _controller.transform.TransformPoint(Vector3.zero);
         //        _controller.transform.Translate(0, v, 0, Space.Self);
-                
+
         //        //onNodePosition.y = _controller.transform.position.y;
         //        float temp = _controller.transform.position.y;
         //        _controller.transform.localPosition = Vector3.zero;
@@ -104,12 +118,12 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
             other.transform.parent.GetComponent<StateController>().currentState.OnTriggerEnter(this.GetComponent<SphereCollider>());        
     }
 
-    void DeativeCapsuleCollider()
+    void DeativeCapsuleCollider(bool ignore = true)
     {
         BoxCollider[] boxColliders = transform.root.GetComponentsInChildren<BoxCollider>();
         foreach (var item in boxColliders)
         {
-            Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), item);
+            Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), item, ignore);
         }
     }
 

@@ -52,6 +52,8 @@ namespace EK
         public DragMovimentState dragMovimentState;
         public ClimbRopeMovimentState climbRopeMovimentState;
 
+        public Vector3 climbOffset = Vector3.zero;
+
         // delcarar o dragMovimentState aqui!!!!
 
         // Use this for initialization
@@ -122,7 +124,8 @@ namespace EK
         {
             RaycastHit hitInfo;
             Vector3 offset = Vector3.up * 0.4f;
-            if (Physics.Raycast(_transform.position + offset, Vector3.down, out hitInfo, 0.5f))
+            int layer = 1 << 0;
+            if (Physics.Raycast(_transform.position + offset + climbOffset, Vector3.down, out hitInfo, 0.5f, layer))
             {
                 this.isGrounded = true;
                 _animator.SetBool("OnGround", isGrounded);
