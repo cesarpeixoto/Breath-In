@@ -17,7 +17,7 @@ namespace EK
 
     public class StateController : MonoBehaviour
     {
-        public delegate void InteractiveHandle(EK.StateController controller) ;
+        public delegate void InteractiveHandle(/*EK.StateController controller*/) ;
         public InteractiveHandle Interaction;
 
         // Referência do objeto carregado.
@@ -74,7 +74,7 @@ namespace EK
         public void OnActionController()
         {
             if(Interaction != null)
-                Interaction(this);
+                Interaction(/*this*/);
             else
             {
                 // Implementar som de que não tem ação disponível
@@ -157,6 +157,17 @@ namespace EK
         public Animator getAnimator()
         {
             return _animator;
+        }
+
+        // É feito, ridiculo mas necessario no momento...
+        public void ReactiveRopeCollision()
+        {
+            Invoke("ReactiveRopeCollisionAux", 0.4f);
+        }
+
+        void ReactiveRopeCollisionAux()
+        {
+            climbRopeMovimentState.ReactiveRopeCollision();
         }
 
 

@@ -14,9 +14,9 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     bool moving = false;
 
-    public override void SetInteractive(StateController controller)
+    public override void SetInteractive(/*StateController controller*/)
     {
-        DeativeCapsuleCollider();
+        DeativeCapsuleCollider(_controller.GetComponent<CapsuleCollider>());
         _controller.transform.SetParent(this.transform);
         _controller.GetComponent<Rigidbody>().isKinematic = true;        
         active = true;
@@ -24,11 +24,12 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         //Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
         //_controller.gameObject.layer = 8;
 
-        config(controller);
+        config(_controller);
         _controller.transform.localPosition = Vector3.zero;
         _controller.transform.Translate(0, 1f, 0, Space.Self);
 
         _controller.currentState = _controller.climbRopeMovimentState;
+        _controller.Interaction = _controller.climbRopeMovimentState.OnActionController;
 
         Debug.Log("Entrou");
 
@@ -44,97 +45,25 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     void config(StateController controller)
     {
-        //controller.transform.FindChild("Rope").localPosition = new Vector3(controller.transform.FindChild("Rope").localPosition.x, -1.738f, controller.transform.FindChild("Rope").localPosition.z);
         controller.transform.FindChild("Mesh").localPosition = new Vector3(controller.transform.FindChild("Mesh").localPosition.x, -1.748f, controller.transform.FindChild("Mesh").localPosition.z);
         controller.GetComponent<CapsuleCollider>().center = new Vector3(controller.GetComponent<CapsuleCollider>().center.x, -0.83f, controller.GetComponent<CapsuleCollider>().center.z);
-
     }
-
-
-    Vector3 onNodePosition = Vector3.zero;
-    protected override void Update()
-    {
-        if (Input.GetButtonDown("Fire2") && active)
-        {
-            active = false;
-            _controller.Interaction = null;
-            _controller.transform.SetParent(this.transform);
-            _controller.climbOffset = Vector3.zero;
-            _controller.climbRopeMovimentState.ropeNode = null;
-            _controller.getTransform().rotation = Quaternion.Euler(Vector3.zero);
-            _controller.getAnimator().SetBool("OnClimbRope", false);
-            _controller.GetComponent<Rigidbody>().isKinematic = false;
-            _controller.currentState = _controller.defaultMovimentState;
-            DeativeCapsuleCollider(false);
-        }
-
-        //moving = false;
-        //if (_controller != null && active)
-        //{
-        //    float v = Input.GetAxis("Vertical") * Time.deltaTime * 0.3f;
-        //    if(v != 0)
-        //    {
-        //        //Vector3 direction = (transform.localPosition - _controller.transform.localPosition).normalized * Time.deltaTime * 0.3f *-1;
-        //        //Vector3 direction = transform.localPosition.normalized * Time.deltaTime * 0.3f * -1;
-        //        //onNodePosition = _controller.transform.TransformPoint(Vector3.zero);
-        //        _controller.transform.Translate(0, v, 0, Space.Self);
-
-        //        //onNodePosition.y = _controller.transform.position.y;
-        //        float temp = _controller.transform.position.y;
-        //        _controller.transform.localPosition = Vector3.zero;
-        //        //float temp = v * Time.deltaTime;// * 0.3f;
-        //        //Vector3 pos = new Vector3(transform.position.x, _controller.transform.position.y + temp, transform.position.z);
-        //        Vector3 pos = new Vector3(_controller.transform.position.x, temp, _controller.transform.position.z);
-
-        //        //_controller.transform.position = onNodePosition;// pos;
-        //        _controller.transform.position = pos;
-        //    }
-
-        //    //_controller.transform.localPosition = new Vector3(transform.localPosition.x, _controller.transform.localPosition.y +0.1f, transform.localPosition.z);
-
-        //    //_controller.transform.localPosition = new Vector3(0, _controller.transform.localPosition.y, 0);
-        //    moving = true;
-
-        //    float h = Input.GetAxis("Horizontal");
-        //    if (h != 0)
-        //        GetComponent<Rigidbody>().AddForce(new Vector3(-h, 0, 0));
-
-        //}
-    }
-
-    //protected override void OnCollisionStay(Collision collision)
-    //{
-    //    base.OnCollisionStay(collision);
-    //    if (collision.gameObject.CompareTag("Player") && active)
-    //    {
-    //        _controller.transform.SetParent(this.transform);
-    //        Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
-    //    }
-    //}
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("GameController") && active)
             other.transform.parent.GetComponent<StateController>().currentState.OnTriggerEnter(this.GetComponent<SphereCollider>());        
-    }
+    }    
 
-    void DeativeCapsuleCollider(bool ignore = true)
+    public void DeativeCapsuleCollider(Collider collider, bool ignore = true)
     {
+        //StateController controller = _controller;
         BoxCollider[] boxColliders = transform.root.GetComponentsInChildren<BoxCollider>();
         foreach (var item in boxColliders)
         {
-            Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), item, ignore);
+            Physics.IgnoreCollision(collider, item, ignore);
         }
     }
-
-
-
-    //protected void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.CompareTag("GameController") && active)
-    //        _controller.transform.SetParent(this.transform);
-    //}
-
 
 
 }

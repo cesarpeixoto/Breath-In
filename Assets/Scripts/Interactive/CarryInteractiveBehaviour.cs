@@ -19,7 +19,7 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
     }
 
     //---------------------------------------------------------------------------------------------------------------
-    public override void SetInteractive(EK.StateController controller)
+    public override void SetInteractive(/*EK.StateController controller*/)
     {
         if(_controller.carryingObject != null)
         {

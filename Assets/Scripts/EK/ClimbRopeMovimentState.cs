@@ -6,9 +6,7 @@ using System;
 public class ClimbRopeMovimentState : IEKState
 {
     private StateController _stateController;
-    private RopeClimbingInteractiveBehaviour _climbingBehaviour = null;
     private float _speed = 0.3f;
-    private float _direction = 1f;
 
     public Rigidbody ropeNode = null;
     private Vector3 _inNodePosition = Vector3.zero;
@@ -40,10 +38,6 @@ public class ClimbRopeMovimentState : IEKState
             else
                 _transform.Translate(0, direction.z, 0, Space.Self);
 
-
-            Debug.Log("!_stateController.isGrounded " + !_stateController.isGrounded);
-            Debug.Log("!(direction.z < 0) " + !(direction.z > 0));
-
             _inNodeY = _transform.position.y;                                           // Armazena posição global no eixo Y pós movimento.
             _transform.localPosition = Vector3.zero;                                    // Armazena posição global, no centro do node.
             _inNodePosition = _transform.position;
@@ -52,7 +46,7 @@ public class ClimbRopeMovimentState : IEKState
         }            
         if(direction.x != 0)
             if(this.ropeNode)
-                this.ropeNode.AddForce(new Vector3(direction.x * 15f, 0, 0));                // impõe forca no node da corda para balança-la.
+                this.ropeNode.AddForce(new Vector3(direction.x * 15f, 0, 0));           // impõe forca no node da corda para balança-la.
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -71,13 +65,39 @@ public class ClimbRopeMovimentState : IEKState
     }
 
     //---------------------------------------------------------------------------------------------------------------
+    public void OnActionController()
+    {
+        Vector3 velocity = ropeNode.velocity;        
+        RopeClimbingInteractiveBehaviour.active = false;
+        _stateController.Interaction = null;
+        _stateController.transform.SetParent(null);
+        _stateController.climbOffset = Vector3.zero;
+        _transform.rotation = Quaternion.Euler(Vector3.zero);
+        _animator.SetBool("OnClimbRope", false);
+        _stateController.GetComponent<Rigidbody>().isKinematic = false;
+
+        velocity *= 4f;
+        //_stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f, ForceMode.Force);        
+        _stateController.GetComponent<Rigidbody>().velocity = velocity;
+        _stateController.currentState = _stateController.defaultMovimentState;
+
+        _stateController.ReactiveRopeCollision();
+        //_stateController.Invoke("ReactiveRopeCollision", 0.5f);
+
+    }
+
+    public void ReactiveRopeCollision()
+    {
+        this.ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().DeativeCapsuleCollider(_stateController.GetComponent<CapsuleCollider>(), false);
+        _stateController.climbRopeMovimentState.ropeNode = null;
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
     public void FixedUpdate()
     {
     }
 
-    public void OnActionController()
-    {
-    }
+    
 
     //---------------------------------------------------------------------------------------------------------------
     public void OnCollisionEnter(Collision collision)

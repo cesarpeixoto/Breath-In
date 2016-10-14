@@ -49,7 +49,7 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
 
     //---------------------------------------------------------------------------------------------------------------
     // Função para o callback, vinculando o objeto ao PLayer e preparando o objeto para ser arrastado ou puxado.
-    public override void SetInteractive(EK.StateController controller)
+    public override void SetInteractive(/*EK.StateController controller*/)
     {
         _rigidbody.isKinematic = false;
         _controller.currentState = _controller.dragMovimentState;                    // Atualiza maquina de estados.

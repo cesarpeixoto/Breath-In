@@ -6,7 +6,7 @@ public abstract class InteractiveBehaviour : MonoBehaviour
     //referência do controlador de estados.
     protected EK.StateController _controller = null;
 
-    public abstract void SetInteractive(EK.StateController controller);
+    public abstract void SetInteractive(/*EK.StateController controller*/);
 
     //---------------------------------------------------------------------------------------------------------------
     // Se houver colisão com o Player, ajusta o callback para esta interatividade.
