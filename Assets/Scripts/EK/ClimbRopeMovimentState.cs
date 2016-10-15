@@ -77,9 +77,12 @@ public class ClimbRopeMovimentState : IEKState
         _stateController.GetComponent<Rigidbody>().isKinematic = false;
 
         velocity *= 4f;
-        //_stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f, ForceMode.Force);        
-        _stateController.GetComponent<Rigidbody>().velocity = velocity;
+        _stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f);  
         _stateController.currentState = _stateController.defaultMovimentState;
+        _stateController.GetComponent<Rigidbody>().drag = 0;
+        _stateController.GetComponent<Rigidbody>().velocity = velocity;
+        _stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, 0), ForceMode.Impulse);
+        //_stateController.currentState = _stateController.defaultMovimentState;
 
         _stateController.ReactiveRopeCollision();
         //_stateController.Invoke("ReactiveRopeCollision", 0.5f);

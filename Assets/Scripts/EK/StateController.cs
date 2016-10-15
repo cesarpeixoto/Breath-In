@@ -24,7 +24,6 @@ namespace EK
         [HideInInspector]
         public GameObject carryingObject = null;
 
-
         // Flags de estados
         public bool isGrounded = true;
         public bool isCrouching = false;
@@ -36,23 +35,32 @@ namespace EK
         public CardinalDirection cardinalState;
         public EKSubState ekState = EKSubState.Idle;
 
-        private float _capsuleHeight = 0.0f;
-        private Vector3 _capsuleCenter = Vector3.zero;
-        private float _crouchCapsuleHeight = 1.30f;
-        private Vector3 _crouchCapsuleCenter = new Vector3(0, 0.67f,0);
-
         // Referências de componentes externos.
+        #region "Componentes Externos"
         private Transform _transform = null;
         private Rigidbody _rigidbody = null;
         private Animator  _animator = null;
         private CapsuleCollider _capsuleCollider = null;
+        #endregion
 
-        [HideInInspector]
-        public DefaultMovimentState defaultMovimentState;
-        public DragMovimentState dragMovimentState;
-        public ClimbRopeMovimentState climbRopeMovimentState;
+        // Instancias da maquina de estados.
+        #region "Maquina de estados"
+        [HideInInspector] public DefaultMovimentState defaultMovimentState;
+        [HideInInspector] public DragMovimentState dragMovimentState;
+        [HideInInspector] public ClimbRopeMovimentState climbRopeMovimentState;
+        #endregion
 
+        // Referências auxiliares
+        #region "Auxiliares Maquina de Estados"
         public Vector3 climbOffset = Vector3.zero;
+        public Transform leftHand = null;
+        public Transform rightHand = null;
+
+        private float _capsuleHeight = 0.0f;
+        private Vector3 _capsuleCenter = Vector3.zero;
+        private float _crouchCapsuleHeight = 1.30f;
+        private Vector3 _crouchCapsuleCenter = new Vector3(0, 0.67f, 0);
+        #endregion
 
         // delcarar o dragMovimentState aqui!!!!
 
@@ -159,6 +167,12 @@ namespace EK
             return _animator;
         }
 
+        public void StartChildCoroutine(IEnumerator callback)
+        {
+            StartCoroutine(callback);
+        }
+
+
         // É feito, ridiculo mas necessario no momento...
         public void ReactiveRopeCollision()
         {
@@ -169,6 +183,8 @@ namespace EK
         {
             climbRopeMovimentState.ReactiveRopeCollision();
         }
+
+
 
 
 

@@ -33,7 +33,7 @@ namespace EK
         private const float _animRotateDuration = 0.6f;
 
         // Variáveis de auxilio
-        private bool moveCondition = false;
+        private bool moveCondition = false;                                         // Condição para movimento.
 
         // Referência dos componentes externos.
         private Transform _transform;
@@ -65,7 +65,7 @@ namespace EK
         //---------------------------------------------------------------------------------------------------------------
         public void OnMovimentController(Vector3 direction)
         {
-
+            // Estabelece a condição de movimento.
             moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
                             _stateController.ekState != EKSubState.Falling;
 
@@ -73,9 +73,6 @@ namespace EK
             {
                 direction = direction.normalized;
                 SetCardinalDirection(direction);
-
-                // TODO: Retirar depois do Teste.
-                _stateController.cardinalState = _cardinalState;
                 direction *= speed;
                 _rigidbody.velocity = direction;
             }
@@ -116,31 +113,11 @@ namespace EK
             {
                 _stateController.StandDown();
                 _stateController.isCrouching = true;
-            }
-                
-
+            }                
             //_stateController.isCrouching = !_stateController.isCrouching;
             _animator.SetBool("OnCrouching", _stateController.isCrouching);
         }
-
-
-        public void OnActionController()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCollisionEnter(Collision collision)
-        {
-            throw new NotImplementedException();
-        }
-
         
-        
-        public void OnTriggerEnter(Collider collider)
-        {
-            throw new NotImplementedException();
-        }
-
         public void Update()
         {
             _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
@@ -190,33 +167,34 @@ namespace EK
         {            
             _cardinalState = GetCardinalDirection(direction);
             if (_lastCardinalState != _cardinalState)                             // Se a direção for diferente, haverá rotação, 
+            {
                 _elapsedTime = 0.0f;                                              // portanto, zera o cronometro.
-
-            _lastCardinalState = _cardinalState;
+                _stateController.StartChildCoroutine(LookTo());                   // Inicia a Coroutine pelo controlador MonoBehaviour.
+            }                
+            _lastCardinalState = _cardinalState;                                  // Atualizar estado anterior.
+            _stateController.cardinalState = _cardinalState;                      // Exibe a carinalidade no controlador de estados.
         }
 
         //---------------------------------------------------------------------------------------------------------------
         // Aplica a rotação apontando para o ponto cardeal atual.
-        private void LookTo(Quaternion direction)
+        public IEnumerator LookTo()
         {
-            _elapsedTime += Time.deltaTime;
-            if (_elapsedTime >= _animRotateDuration)
+            while (_elapsedTime != _animRotateDuration)
             {
-                _elapsedTime = _animRotateDuration;
-                
-                // TODO: Colocar uma variável RunRotate urgente!!!!!
-                //_cardinalState = CardinalDirection.None;
+                _elapsedTime += Time.deltaTime;
+                if (_elapsedTime >= _animRotateDuration)
+                    _elapsedTime = _animRotateDuration;
+                _transform.rotation = Quaternion.Lerp(_transform.rotation, _cardinalRefs[_cardinalState], _elapsedTime / _animRotateDuration);
+                yield return null;
             }
-            _transform.rotation = Quaternion.Lerp(_transform.rotation, direction, _elapsedTime / _animRotateDuration);
         }
 
         //---------------------------------------------------------------------------------------------------------------
-        // FixedUpdate is called every fixed framerate frame. Aplica o LookTo de acordo com o ponto cardeal atual.
-        public void FixedUpdate()
-        {
-            if (_cardinalState != CardinalDirection.None)
-                LookTo(_cardinalRefs[_cardinalState]);
-        }
+        // Métodos da interface sem implementação neste estado.        
+        public void FixedUpdate() { } //FixedUpdate is called every fixed framerate frame.
+        public void OnActionController() {}
+        public void OnCollisionEnter(Collision collision) {}
+        public void OnTriggerEnter(Collider collider) {}
         //---------------------------------------------------------------------------------------------------------------
     }
 
