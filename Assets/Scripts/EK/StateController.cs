@@ -151,6 +151,9 @@ namespace EK
             }
             else
                 this.isGrounded = false;
+                _animator.SetBool("OnGround", isGrounded);
+                _animator.SetBool("OnFalling", !isGrounded);
+
         }
 
         public void OnMovimentController(Vector3 direction, Vector3 directionRaw)

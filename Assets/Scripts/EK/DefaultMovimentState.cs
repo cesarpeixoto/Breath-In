@@ -88,15 +88,19 @@ namespace EK
         public void OnJumpController()
         {
             // TODO: Estabelecer um tempo de intervalo entre os saltos???
+          
             if (_stateController.isGrounded)
             {
-                //_animator.SetBool("OnGround", false);
+                _animator.SetBool("OnJump", true);
                 _stateController.isGrounded = false;                
                 _rigidbody.velocity *= 1.15f;
                 _rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
                 _rigidbody.drag = 0f;
             }
         }
+
+
+
 
         //---------------------------------------------------------------------------------------------------------------
         public void OnCrouchingController()
@@ -122,8 +126,12 @@ namespace EK
         {
             _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
             _animator.SetFloat("InputZ", Input.GetAxisRaw("Vertical"), 0.1f, Time.deltaTime);
+            if(Mathf.Abs(_animator.GetFloat("InputX")) > 0.1f || Mathf.Abs(_animator.GetFloat("InputZ")) > 0.1f)
+                _animator.SetBool("IsMoving", true);
+            else
+                _animator.SetBool("IsMoving", false);
         }
-        
+
         //---------------------------------------------------------------------------------------------------------------
         // Retorna o ponto cardeal da direção.
         public CardinalDirection GetCardinalDirection(Vector3 direction)
