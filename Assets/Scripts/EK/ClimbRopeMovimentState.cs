@@ -10,6 +10,7 @@ public class ClimbRopeMovimentState : IEKState
 
     public Rigidbody ropeNode = null;
     private Vector3 _inNodePosition = Vector3.zero;
+    private Vector3 _rotationDefault = Vector3.zero;
     private float _inNodeY = 0.0f;
 
     private Transform _transform = null;
@@ -52,6 +53,7 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void OnTriggerEnter(Collider collider)
     {
+        _rotationDefault = _transform.rotation.eulerAngles;
         _transform.SetParent(collider.transform);
         _stateController.climbOffset = new Vector3(0, -1.83f, 0);
         ropeNode = collider.GetComponent<Rigidbody>();
@@ -72,14 +74,15 @@ public class ClimbRopeMovimentState : IEKState
         _stateController.Interaction = null;
         _stateController.transform.SetParent(null);
         _stateController.climbOffset = Vector3.zero;
-        _transform.rotation = Quaternion.Euler(Vector3.zero);
+        _transform.rotation = Quaternion.Euler(_rotationDefault);
+        
         _animator.SetBool("OnClimbRope", false);
         _stateController.GetComponent<Rigidbody>().isKinematic = false;
 
         velocity *= 4f;
         _stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f);  
         _stateController.currentState = _stateController.defaultMovimentState;
-        _stateController.GetComponent<Rigidbody>().drag = 0;
+        //_stateController.GetComponent<Rigidbody>().drag = 0;
         _stateController.GetComponent<Rigidbody>().velocity = velocity;
         _stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, 0), ForceMode.Impulse);
         //_stateController.currentState = _stateController.defaultMovimentState;
