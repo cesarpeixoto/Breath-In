@@ -65,11 +65,7 @@ public class InputHandle : MonoBehaviour
         else if (Input.GetButtonDown("Fire1"))
         {
             _stateController.currentState.OnCrouchingController();
-        }
-        else if (Input.GetButtonDown("Fire2"))
-        {
-            _stateController.OnActionController();
-        }
+        }        
         else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
         {
             if (Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Vertical") == 0)
@@ -90,7 +86,10 @@ public class InputHandle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (Input.GetButtonDown("Fire2"))
+        {
+            _stateController.OnActionController();
+        }
     }
 
 

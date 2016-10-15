@@ -30,6 +30,7 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
         _controller.currentState = _controller.climbRopeMovimentState;
         _controller.Interaction = _controller.climbRopeMovimentState.OnActionController;
+        _controller.climbRopeMovimentState.ropeNode = this.GetComponent<Rigidbody>();
 
         Debug.Log("Entrou");
 

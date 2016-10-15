@@ -87,16 +87,27 @@ public class ClimbRopeMovimentState : IEKState
         _stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, 0), ForceMode.Impulse);
         //_stateController.currentState = _stateController.defaultMovimentState;
 
-        _stateController.ReactiveRopeCollision();
+        _stateController.StartChildCoroutine(ReactiveRopeCollision());
+
+        //_stateController.ReactiveRopeCollision();
+        
         //_stateController.Invoke("ReactiveRopeCollision", 0.5f);
 
     }
 
-    public void ReactiveRopeCollision()
+    //public void ReactiveRopeCollision()
+    //{
+    //    this.ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().DeativeCapsuleCollider(_stateController.GetComponent<CapsuleCollider>(), false);
+    //    _stateController.climbRopeMovimentState.ropeNode = null;
+    //}
+
+    public IEnumerator ReactiveRopeCollision()
     {
+        yield return new WaitForSeconds(0.3f);
         this.ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().DeativeCapsuleCollider(_stateController.GetComponent<CapsuleCollider>(), false);
         _stateController.climbRopeMovimentState.ropeNode = null;
     }
+
 
     //---------------------------------------------------------------------------------------------------------------
     public void FixedUpdate()

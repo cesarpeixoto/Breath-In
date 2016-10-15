@@ -90,7 +90,7 @@ namespace EK
             // TODO: Estabelecer um tempo de intervalo entre os saltos???
             if (_stateController.isGrounded)
             {
-                _animator.SetBool("OnGround", false);
+                //_animator.SetBool("OnGround", false);
                 _stateController.isGrounded = false;                
                 _rigidbody.velocity *= 1.15f;
                 _rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);

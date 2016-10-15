@@ -95,10 +95,4 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
     }
 
     //---------------------------------------------------------------------------------------------------------------
-    protected override void OnCollisionStay(Collision collision)
-    {
-        //base.OnCollisionStay(collision);
-    }
-
-    //---------------------------------------------------------------------------------------------------------------
 }

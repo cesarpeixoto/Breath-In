@@ -17,7 +17,7 @@ namespace EK
 
     public class StateController : MonoBehaviour
     {
-        public delegate void InteractiveHandle(/*EK.StateController controller*/) ;
+        public delegate void InteractiveHandle(/*EK.StateController controller*/);
         public InteractiveHandle Interaction;
 
         // Referência do objeto carregado.
@@ -25,7 +25,13 @@ namespace EK
         public GameObject carryingObject = null;
 
         // Flags de estados
+        //public bool _isGrounded = true;
         public bool isGrounded = true;
+
+
+
+
+
         public bool isCrouching = false;
         public Vector3 axis = Vector3.zero;
         public Vector3 axisRaw = Vector3.zero;
@@ -39,15 +45,18 @@ namespace EK
         #region "Componentes Externos"
         private Transform _transform = null;
         private Rigidbody _rigidbody = null;
-        private Animator  _animator = null;
+        private Animator _animator = null;
         private CapsuleCollider _capsuleCollider = null;
         #endregion
 
         // Instancias da maquina de estados.
         #region "Maquina de estados"
-        [HideInInspector] public DefaultMovimentState defaultMovimentState;
-        [HideInInspector] public DragMovimentState dragMovimentState;
-        [HideInInspector] public ClimbRopeMovimentState climbRopeMovimentState;
+        [HideInInspector]
+        public DefaultMovimentState defaultMovimentState;
+        [HideInInspector]
+        public DragMovimentState dragMovimentState;
+        [HideInInspector]
+        public ClimbRopeMovimentState climbRopeMovimentState;
         #endregion
 
         // Referências auxiliares
@@ -76,12 +85,12 @@ namespace EK
             this.defaultMovimentState = new DefaultMovimentState(this);
             this.currentState = this.defaultMovimentState;
             this.dragMovimentState = new DragMovimentState(this);
-            this.climbRopeMovimentState = new ClimbRopeMovimentState(this);     
+            this.climbRopeMovimentState = new ClimbRopeMovimentState(this);
         }
 
         public void OnActionController()
         {
-            if(Interaction != null)
+            if (Interaction != null)
                 Interaction(/*this*/);
             else
             {
@@ -120,7 +129,7 @@ namespace EK
         {
             Ray ray = new Ray(_rigidbody.position + Vector3.up * _capsuleCollider.radius * 0.5f, Vector3.up);
             float rayLength = _capsuleHeight - _capsuleCollider.radius * 0.5f;
-            if(Physics.SphereCast(ray, _capsuleCollider.radius/2, rayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.SphereCast(ray, _capsuleCollider.radius / 2, rayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
                 return true;
             else
                 return false;
@@ -138,10 +147,10 @@ namespace EK
                 this.isGrounded = true;
                 _animator.SetBool("OnGround", isGrounded);
                 _animator.SetBool("OnFalling", !isGrounded);
-                _rigidbody.drag = 1.8f;                                
+                _rigidbody.drag = 1.8f;
             }
             else
-                this.isGrounded = false;                                
+                this.isGrounded = false;
         }
 
         public void OnMovimentController(Vector3 direction, Vector3 directionRaw)
@@ -151,7 +160,7 @@ namespace EK
             this.axisRaw = directionRaw;//_transform.InverseTransformDirection(directionRaw);
             this.currentState.OnMovimentController(axis);
         }
-       
+
         public Transform getTransform()
         {
             return _transform;
@@ -188,7 +197,7 @@ namespace EK
 
 
 
-        
+
 
     }
 }
