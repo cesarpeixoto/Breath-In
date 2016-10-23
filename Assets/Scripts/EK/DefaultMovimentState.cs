@@ -62,6 +62,8 @@ namespace EK
             _lastCardinalState = CardinalDirection.None;
         }
 
+        Vector3 velocity;
+        bool canmove = false;
         //---------------------------------------------------------------------------------------------------------------
         public void OnMovimentController(Vector3 direction)
         {
@@ -69,20 +71,32 @@ namespace EK
             moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
                             _stateController.ekState != EKSubState.Falling;
 
+            //if (_stateController.isGrounded && moveCondition)
+            //{
+            //    direction = direction.normalized;
+            //    SetCardinalDirection(direction);
+            //    direction *= speed;
+            //    _rigidbody.velocity = direction;
+            //}
+            //else
+            //    if (isOpposedDirection(direction) && !_stateController.isGrounded)
+            //    {
+            //        _rigidbody.drag = 4f;
+            //       // _animator.SetBool("OnFalling", true); Está dando um comportamento estranho nas anins
+            //    }                    
+
             if (_stateController.isGrounded && moveCondition)
             {
-                direction = direction.normalized;
-                SetCardinalDirection(direction);
-                direction *= speed;
-                _rigidbody.velocity = direction;
+                velocity = direction;
+                canmove = true;
             }
             else
-                if (isOpposedDirection(direction) && !_stateController.isGrounded)
-                {
-                    _rigidbody.drag = 4f;
-                   // _animator.SetBool("OnFalling", true); Está dando um comportamento estranho nas anins
-                }                    
+                canmove = false;
+
+
         }
+
+        
 
         //---------------------------------------------------------------------------------------------------------------
         public void OnJumpController()
@@ -197,9 +211,25 @@ namespace EK
             }
         }
 
+
+        // velocity = direction;
+        //canmove = true;
+        //FixedUpdate is called every fixed framerate frame.
+        public void FixedUpdate()
+        {
+            if(canmove)
+            {
+                Vector3 vel = velocity * speed;
+                _stateController.transform.forward = Vector3.Slerp(_stateController.transform.forward, velocity.normalized, Time.fixedDeltaTime * 6.5f);
+                vel.y = _rigidbody.velocity.y;
+                _rigidbody.velocity = vel;
+            }
+
+        } 
+
         //---------------------------------------------------------------------------------------------------------------
         // Métodos da interface sem implementação neste estado.        
-        public void FixedUpdate() { } //FixedUpdate is called every fixed framerate frame.
+        //public void FixedUpdate() { } //FixedUpdate is called every fixed framerate frame.
         public void OnActionController() {}
         public void OnCollisionEnter(Collision collision) {}
         public void OnTriggerEnter(Collider collider) {}

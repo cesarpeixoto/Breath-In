@@ -73,8 +73,10 @@ public class ClimbRopeMovimentState : IEKState
         RopeClimbingInteractiveBehaviour.active = false;
         _stateController.Interaction = null;
         _stateController.transform.SetParent(null);
+
+        // Depois da nova mecanica de movimento
         _stateController.climbOffset = Vector3.zero;
-        _transform.rotation = Quaternion.Euler(_rotationDefault);
+        
         
         _animator.SetBool("OnClimbRope", false);
         _stateController.GetComponent<Rigidbody>().isKinematic = false;
@@ -86,6 +88,12 @@ public class ClimbRopeMovimentState : IEKState
         _stateController.GetComponent<Rigidbody>().velocity = velocity;
         _stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, 0), ForceMode.Impulse);
         //_stateController.currentState = _stateController.defaultMovimentState;
+
+        //Onde estava isso???????
+        _transform.FindChild("Mesh").localPosition = Vector3.zero;
+        _stateController.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.9f, 0);
+        _transform.Translate(0, -1.748f, 0);
+        _transform.rotation = Quaternion.Euler(_rotationDefault);
 
         _stateController.StartChildCoroutine(ReactiveRopeCollision());
 

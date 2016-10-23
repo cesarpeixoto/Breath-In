@@ -17,6 +17,16 @@ namespace EK
 
     public class StateController : MonoBehaviour
     {
+
+        // Flags auxiliares de Estado.
+        public bool OnGround = true;
+        private float _groundDistance = 0.0f;
+
+        public RaycastHit groundHit;
+
+
+
+
         public delegate void InteractiveHandle(/*EK.StateController controller*/);
         public InteractiveHandle Interaction;
 
@@ -109,6 +119,11 @@ namespace EK
         {
             this.currentState.FixedUpdate();
             CheckGroundStatus();
+
+
+
+            CheckGroundDistance();
+
         }
 
         //
@@ -135,34 +150,9 @@ namespace EK
                 return false;
         }
 
-        //---------------------------------------------------------------------------------------------------------------
-        // Checa e estabelece se o Player está em contato com o chão.
-        private void CheckGroundStatus()
-        {
-            RaycastHit hitInfo;
-            Vector3 offset = Vector3.up * 0.4f;
-            int layer = 1 << 0;
-            if (Physics.Raycast(_transform.position + offset + climbOffset, Vector3.down, out hitInfo, 0.5f, layer))
-            {
-                this.isGrounded = true;
-                _animator.SetBool("OnGround", isGrounded);
-                _animator.SetBool("OnFalling", !isGrounded);
-                _rigidbody.drag = 1.8f;
-            }
-            else
-                this.isGrounded = false;
-                _animator.SetBool("OnGround", isGrounded);
-                _animator.SetBool("OnFalling", !isGrounded);
+        
 
-        }
-
-        public void OnMovimentController(Vector3 direction, Vector3 directionRaw)
-        {
-            // aqui sempre entra
-            this.axis = direction;//_transform.InverseTransformDirection(direction);
-            this.axisRaw = directionRaw;//_transform.InverseTransformDirection(directionRaw);
-            this.currentState.OnMovimentController(axis);
-        }
+        
 
         public Transform getTransform()
         {
@@ -197,9 +187,77 @@ namespace EK
         }
 
 
+        public Vector3 input = Vector3.zero;
+        private Vector3 _velocity = Vector3.zero;
+        public void OnMovimentController(Vector3 direction)
+        {
+            direction = Vector3.ClampMagnitude(direction, 1f);
+            _velocity = Camera.main.transform.forward * direction.z + Camera.main.transform.right * direction.x;
+            _velocity.y = 0;
+            this.currentState.OnMovimentController(_velocity);
+        }
 
+        //---------------------------------------------------------------------------------------------------------------
+        // Checa e estabelece se o Player está em contato com o chão.
+        private void CheckGroundStatus()
+        {
+            RaycastHit hitInfo;
+            Vector3 offset = Vector3.up * 0.4f;
+            int layer = 1 << 0;
+            if (Physics.Raycast(_transform.position + offset + climbOffset, Vector3.down, out hitInfo, 0.5f, layer))
+            {
+                this.isGrounded = true;
+                _animator.SetBool("OnGround", isGrounded);
+                _animator.SetBool("OnFalling", !isGrounded);
+                _rigidbody.drag = 1.8f;
+            }
+            else
+                this.isGrounded = false;
+            _animator.SetBool("OnGround", isGrounded);
+            _animator.SetBool("OnFalling", !isGrounded);
 
+        }
 
+        //---------------------------------------------------------------------------------------------------------------
+        // Checa e estabelece se o Player está em contato com o chão e qual a distancia.
+                
+        private void CheckGroundDistance()
+        {            
+            float radius = _capsuleCollider.radius * 0.9f;                                          // Raio 10% menor que do capsule colider.            
+            Vector3 spherePosition = _transform.position + (Vector3.up * _capsuleCollider.radius);  // Posição de origem para o SphereCast de acordo com CapsuleCollider
+            Ray sphereRay = new Ray(spherePosition, Vector3.down);
+
+            if (Physics.SphereCast(sphereRay, radius, out this.groundHit, 0.03f))                         // Checa se o personagem está em alguma superficie.
+            {
+                this.OnGround = true;
+                _groundDistance = 0.0f;
+            }
+            else
+            {
+                Ray distanceRay = new Ray(_transform.position, Vector3.down);
+                if (Physics.Raycast(distanceRay, out this.groundHit, 2f))
+                    _groundDistance = this.groundHit.distance;
+                else
+                    _groundDistance = 2f;
+            }
+#if UNITY_EDITOR
+            DebugSpherePosition = spherePosition;
+            DebugSphereRadius = radius;
+#endif
+        }
+
+        //---------------------------------------------------------------------------------------------------------------
+        // Para Debug.
+
+#if UNITY_EDITOR
+        Vector3 DebugSpherePosition = Vector3.zero;
+        float DebugSphereRadius = 0.0f;
+        void OnDrawGizmos()
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(DebugSpherePosition, DebugSphereRadius);
+        }
+#endif
 
 
     }

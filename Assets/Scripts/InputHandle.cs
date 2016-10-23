@@ -38,7 +38,7 @@ public class InputHandle : MonoBehaviour
         _horizontalRaw = Input.GetAxis("Horizontal");
         _verticalRaw = Input.GetAxis("Vertical");
 
-        
+
 
         //float temp = Input.GetAxisRaw("Horizontal");
 
@@ -56,7 +56,7 @@ public class InputHandle : MonoBehaviour
         //isFolling = _stateController.getAnimator().GetCurrentAnimatorStateInfo(0).IsName("hard_landing");
 
 
-
+        _stateController.OnMovimentController(new Vector3(_horizontal, 0, _vertical));
         if (Input.GetAxis("Jump") != 0)
         {
             //_moviment.OnJump();
@@ -67,22 +67,24 @@ public class InputHandle : MonoBehaviour
         {
             _stateController.currentState.OnCrouchingController();
         }        
-        else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
-            if (Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Vertical") == 0)
-                _stateController.currentState.OnMovimentController(new Vector3(-_horizontal, 0, 0));
-                //_stateController.OnMovimentController(new Vector3(-_horizontal, 0, 0), new Vector3(_horizontalRaw, 0, 0));
-            else if (Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Horizontal") == 0)
-                _stateController.currentState.OnMovimentController(new Vector3(0, 0, -_vertical));
-                //_stateController.OnMovimentController(new Vector3(0, 0, -_vertical), new Vector3(0, 0, _verticalRaw));
-            else
-                _stateController.currentState.OnMovimentController(new Vector3(-_horizontal, 0, -_vertical));
-                //_stateController.OnMovimentController(new Vector3(-_horizontal, 0, -_vertical), new Vector3(_horizontalRaw, 0, _verticalRaw));
-        }
+        //else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+        //{
+        //    _stateController.OnMovimentController(new Vector3(_horizontal, 0, _vertical));
+
+        //    //if (Input.GetAxisRaw("Horizontal") != 0 && Input.GetAxisRaw("Vertical") == 0)
+        //    //    _stateController.currentState.OnMovimentController(new Vector3(-_horizontal, 0, 0));
+        //    //    //_stateController.OnMovimentController(new Vector3(-_horizontal, 0, 0), new Vector3(_horizontalRaw, 0, 0));
+        //    //else if (Input.GetAxisRaw("Vertical") != 0 && Input.GetAxisRaw("Horizontal") == 0)
+        //    //    _stateController.currentState.OnMovimentController(new Vector3(0, 0, -_vertical));
+        //    //    //_stateController.OnMovimentController(new Vector3(0, 0, -_vertical), new Vector3(0, 0, _verticalRaw));
+        //    //else
+        //    //    _stateController.currentState.OnMovimentController(new Vector3(-_horizontal, 0, -_vertical));
+        //    //    //_stateController.OnMovimentController(new Vector3(-_horizontal, 0, -_vertical), new Vector3(_horizontalRaw, 0, _verticalRaw));
+        //}
         //else
         //    _stateController.axis = Vector3.zero;
-            //_stateController.currentState.OnMovimentController(Vector3.zero);
-            
+        //_stateController.currentState.OnMovimentController(Vector3.zero);
+
     }
 
     private void FixedUpdate()
