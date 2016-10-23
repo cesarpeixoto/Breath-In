@@ -63,7 +63,7 @@ public class DragInteractiveBehaviour : InteractiveBehaviour
     //---------------------------------------------------------------------------------------------------------------
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && Input.GetButtonDown("Fire2"))
         {
             _controller = collision.gameObject.GetComponent<EK.StateController>();  // Estabelece referência do controlador de estados.
             _controller.Interaction = SetInteractive;                               // Estabelece o callback para esta interação.

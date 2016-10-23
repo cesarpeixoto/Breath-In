@@ -40,7 +40,7 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
         {
             EK.StateController controller = collision.gameObject.GetComponent<EK.StateController>();
             controller.Interaction = null;
-            controller.carryingObject = null;
+            //controller.carryingObject = null;
             if (_controller != null)
                 _controller = null;
         }
