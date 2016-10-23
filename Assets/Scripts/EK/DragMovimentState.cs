@@ -10,9 +10,8 @@ namespace EK
         // Referência do controlador de estados
         private StateController _stateController = null;
         public Rigidbody dragObject = null;
-        private CardinalDirection _forwardDirection;
         private float speed = 2f;
-
+        private Vector3 forward;
         private Vector3 moviment = Vector3.zero;
 
         // Referência dos componentes externos.
@@ -27,40 +26,35 @@ namespace EK
             _rigidbody = _stateController.getRigidbody();
             _animator = _stateController.getAnimator();
         }
-
-        Vector3 forward;
+        
         public void OnMovimentController(Vector3 direction)
         {
-            //_forwardDirection = _stateController.cardinalState;
-            //bool moveCondition = _stateController.defaultMovimentState.GetCardinalDirection(direction) == _forwardDirection || isOpposedDirection(direction);
             forward = direction.normalized;
-            //bool moveCondition = _transform.forward == forward || _transform.forward.normalized == (forward * -1);
             moviment = direction;
-            bool moveCondition = Vector3.SqrMagnitude(_transform.forward - forward) < 0.1 || Vector3.SqrMagnitude(_transform.forward - (forward * -1f)) < 0.1;
+            bool moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
+                                 _stateController.ekState != EKSubState.Falling && _stateController.ekTrasitionState == EKTrasitionState.None;
+            bool directionCondition = Vector3.SqrMagnitude(_transform.forward - forward) < 0.1 || Vector3.SqrMagnitude(_transform.forward - (forward * -1f)) < 0.1;
 
-            if (_stateController.isGrounded && moveCondition)
+            if (_stateController.isGrounded && directionCondition && moveCondition)
             {
-                Debug.Log("Empurrando");
-                direction *= speed;
-                _rigidbody.velocity = direction;
-                dragObject.velocity = direction;
+                direction *= Time.deltaTime * speed;
+                _transform.Translate(direction, Space.World);
+                dragObject.transform.Translate(direction, Space.World);
             }
-
         }
 
-
-        private bool isOpposedDirection(Vector3 direction)
+        public void Update()
         {
-            CardinalDirection cardialDirection = _stateController.defaultMovimentState.GetCardinalDirection(direction);
-            if ((int)cardialDirection % 2 == 0)
-                return (int)cardialDirection - 1 == (int)_forwardDirection;
-            else
-                return (int)cardialDirection + 1 == (int)_forwardDirection;
+            if (_transform.forward.x > 0.1 || _transform.forward.z > 0.1)
+                moviment *= -1f;
+
+            _animator.SetFloat("InputX", moviment.x, 0.1f, Time.deltaTime);
+            _animator.SetFloat("InputZ", moviment.z, 0.1f, Time.deltaTime);
         }
+
 
         public void FixedUpdate()
         {
-
         }
 
         public void OnActionController()
@@ -88,20 +82,6 @@ namespace EK
 
         }
 
-        public void Update()
-        {
-            //moviment.x = Input.GetAxisRaw("Horizontal");
-            //moviment.y = Input.GetAxisRaw("Vertical");
-
-            //if (_stateController.cardinalState == CardinalDirection.Right || _stateController.cardinalState == CardinalDirection.Up)
-            //    moviment *= -1;
-
-            if (_transform.forward.x > 0.1 || _transform.forward.z > 0.1)
-                moviment *= -1f;
-
-            _animator.SetFloat("InputX", moviment.x, 0.1f, Time.deltaTime);
-            _animator.SetFloat("InputZ", moviment.z, 0.1f, Time.deltaTime);
-        }
     }
 
 }

@@ -13,10 +13,14 @@ using UnityEditor;
 
 namespace EK
 {
-    public enum EKSubState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling }
+    public enum EKSubState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling, Draging }
+    public enum EKTrasitionState { None, BeginDrag }
 
     public class StateController : MonoBehaviour
     {
+        // Callback das ações de iteração.
+        public delegate void InteractiveHandle();
+        public InteractiveHandle Interaction;
 
         // Flags auxiliares de Estado.
         public bool OnGround = true;
@@ -25,10 +29,6 @@ namespace EK
         public RaycastHit groundHit;
 
 
-
-
-        public delegate void InteractiveHandle(/*EK.StateController controller*/);
-        public InteractiveHandle Interaction;
 
         // Referência do objeto carregado.
         [HideInInspector]
@@ -39,17 +39,14 @@ namespace EK
         public bool isGrounded = true;
 
 
-
-
-
         public bool isCrouching = false;
         public Vector3 axis = Vector3.zero;
         public Vector3 axisRaw = Vector3.zero;
 
         [SerializeField]
         public IEKState currentState;
-        public CardinalDirection cardinalState;
         public EKSubState ekState = EKSubState.Idle;
+        public EKTrasitionState ekTrasitionState = EKTrasitionState.None;
 
         // Referências de componentes externos.
         #region "Componentes Externos"
