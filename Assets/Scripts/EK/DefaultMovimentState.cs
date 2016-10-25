@@ -97,10 +97,16 @@ namespace EK
         {
             _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
             _animator.SetFloat("InputZ", Input.GetAxisRaw("Vertical"), 0.1f, Time.deltaTime);
-            if(Mathf.Abs(_animator.GetFloat("InputX")) > 0.1f || Mathf.Abs(_animator.GetFloat("InputZ")) > 0.1f)
+
+            if(Mathf.Abs(_animator.GetFloat("InputX")) > 0.3f || Mathf.Abs(_animator.GetFloat("InputZ")) > 0.3f)
                 _animator.SetBool("IsMoving", true);
             else
                 _animator.SetBool("IsMoving", false);
+
+            if (velocity.sqrMagnitude <= 0.01f)
+                _animator.SetBool("IsStoped", true);
+            else
+                _animator.SetBool("IsStoped", false);
         }
 
 
