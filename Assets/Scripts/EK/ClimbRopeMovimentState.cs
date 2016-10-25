@@ -10,7 +10,7 @@ public class ClimbRopeMovimentState : IEKState
 
     public Rigidbody ropeNode = null;
     private Vector3 _inNodePosition = Vector3.zero;
-    private Vector3 _rotationDefault = Vector3.zero;
+    private float _rotationDefaultInY = 0.0f;
     private float _inNodeY = 0.0f;
 
     private Transform _transform = null;
@@ -53,7 +53,7 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void OnTriggerEnter(Collider collider)
     {
-        _rotationDefault = _transform.rotation.eulerAngles;
+        _rotationDefaultInY = _transform.rotation.eulerAngles.y;
         _transform.SetParent(collider.transform);
         _stateController.climbOffset = new Vector3(0, -1.83f, 0);
         ropeNode = collider.GetComponent<Rigidbody>();
@@ -69,38 +69,42 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void OnActionController()
     {
-        Vector3 velocity = ropeNode.velocity;        
+                        
         RopeClimbingInteractiveBehaviour.active = false;
         _stateController.Interaction = null;
         _stateController.transform.SetParent(null);
 
         // Depois da nova mecanica de movimento
-        _stateController.climbOffset = Vector3.zero;
-        
-        
+        _stateController.climbOffset = Vector3.zero;                
         _animator.SetBool("OnClimbRope", false);
         _stateController.GetComponent<Rigidbody>().isKinematic = false;
+        _transform.rotation.eulerAngles.Set(0, _rotationDefaultInY, 0);
 
-        velocity *= 4f;
-        _stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f);  
+        //float velMagnitude = ropeNode.velocity.magnitude;
+        ////velMagnitude = Mathf.Lerp(4.7f, 0f, velMagnitude / 4.7f);
+        //Debug.Log(velMagnitude);
+        //Vector3 velocity = _transform.forward;
+        //velocity.y += 0.1f;
+        //velocity *= velMagnitude * 3f;
+        //Debug.Log(velocity);
+
+
+        Vector3 velocity = ropeNode.velocity * 3f;
+        Debug.Log(velocity);
+        //_stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f);  
         _stateController.currentState = _stateController.defaultMovimentState;
-        //_stateController.GetComponent<Rigidbody>().drag = 0;
         _stateController.GetComponent<Rigidbody>().velocity = velocity;
-        _stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, 0), ForceMode.Impulse);
-        //_stateController.currentState = _stateController.defaultMovimentState;
+        //_stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, velocity.z), ForceMode.Impulse);
+        _stateController.GetComponent<Rigidbody>().AddForce(velocity * 3f, ForceMode.Acceleration);
 
         //Onde estava isso???????
         _transform.FindChild("Mesh").localPosition = Vector3.zero;
         _stateController.GetComponent<CapsuleCollider>().center = new Vector3(0, 0.9f, 0);
         _transform.Translate(0, -1.748f, 0);
-        _transform.rotation = Quaternion.Euler(_rotationDefault);
+        _transform.rotation = Quaternion.Euler(0, _rotationDefaultInY, 0);
 
         _stateController.StartChildCoroutine(ReactiveRopeCollision());
-
-        //_stateController.ReactiveRopeCollision();
-        
-        //_stateController.Invoke("ReactiveRopeCollision", 0.5f);
-
+        _stateController.GetComponent<Rigidbody>().velocity = velocity;
     }
 
     //public void ReactiveRopeCollision()
@@ -114,6 +118,7 @@ public class ClimbRopeMovimentState : IEKState
         yield return new WaitForSeconds(0.3f);
         this.ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().DeativeCapsuleCollider(_stateController.GetComponent<CapsuleCollider>(), false);
         _stateController.climbRopeMovimentState.ropeNode = null;
+        _transform.rotation.eulerAngles.Set(0, _rotationDefaultInY, 0);
     }
 
 

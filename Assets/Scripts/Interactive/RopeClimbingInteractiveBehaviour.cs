@@ -5,10 +5,6 @@ using System;
 
 public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 {
-
-    //Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
-
-   
     public static bool active = false;
     public SphereCollider ropectrl = null;
 
@@ -21,9 +17,6 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
         _controller.GetComponent<Rigidbody>().isKinematic = true;        
         active = true;
         _controller.getAnimator().SetBool("OnClimbRope", true);
-        //Physics.IgnoreCollision(_controller.GetComponent<CapsuleCollider>(), GetComponent<BoxCollider>());
-        //_controller.gameObject.layer = 8;
-
         config(_controller);
         _controller.transform.localPosition = Vector3.zero;
         _controller.transform.Translate(0, 1f, 0, Space.Self);
@@ -54,7 +47,13 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
     {
         if (other.gameObject.CompareTag("GameController") && active)
             other.transform.parent.GetComponent<StateController>().currentState.OnTriggerEnter(this.GetComponent<SphereCollider>());        
-    }    
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("GameController") && !active)
+            other.transform.parent.GetComponent<StateController>().Interaction = null;
+    }
 
     public void DeativeCapsuleCollider(Collider collider, bool ignore = true)
     {

@@ -54,16 +54,18 @@ public class InputHandle : MonoBehaviour
         //    _stateController.getAnimator().SetFloat("Velocity", _stateController.getRigidbody().velocity.magnitude, 0.1f, Time.deltaTime);
 
         //isFolling = _stateController.getAnimator().GetCurrentAnimatorStateInfo(0).IsName("hard_landing");
-
-
         _stateController.OnMovimentController(new Vector3(_horizontal, 0, _vertical));
-        if (Input.GetAxis("Jump") != 0)
+        if (Input.GetButtonDown("Fire2"))
+        {
+            _stateController.OnActionController();
+        }
+        else if (Input.GetAxis("Jump") != 0)
         {
             //_moviment.OnJump();
             _stateController.currentState.OnJumpController();
             
         }
-        else if (Input.GetButtonDown("Fire1"))
+        else if (Input.GetButton("Fire1"))
         {
             _stateController.currentState.OnCrouchingController();
         }        
@@ -89,10 +91,7 @@ public class InputHandle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Input.GetButtonDown("Fire2"))
-        {
-            _stateController.OnActionController();
-        }
+        
     }
 
 
