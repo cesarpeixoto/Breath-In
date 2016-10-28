@@ -41,7 +41,7 @@ namespace EK
         {
             // Estabelece a condição de movimento.
             moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
-                            _stateController.ekState != EKSubState.Falling;
+                            _stateController.ekState != EKSubState.Falling && _stateController.ekState != EKSubState.Jumping;
 
             if (_stateController.isGrounded && moveCondition)
             {
