@@ -14,10 +14,11 @@ namespace EK
 
         // Atributos de movimento do EK
         private float speed = 3.2f;
-        private float jumpForce = 110.0f;
+        private float jumpForce = 300.0f;
 
         // Variáveis de auxilio
         private bool moveCondition = false;                                         // Condição para movimento.
+        private float lastTimeJumped = 0f;                                           //Controle do tempo entre saltos
 
         // Referência dos componentes externos.
         private Transform _transform;
@@ -32,6 +33,7 @@ namespace EK
             _transform = _stateController.getTransform();
             _rigidbody = _stateController.getRigidbody();
             _animator = _stateController.getAnimator();
+            lastTimeJumped = Time.time;
         }
 
         Vector3 velocity;
@@ -60,13 +62,17 @@ namespace EK
         {
             // TODO: Estabelecer um tempo de intervalo entre os saltos???
           
-            if (_stateController.isGrounded)
+            if (_stateController.isGrounded && Time.time > lastTimeJumped + 0.2f)
             {
                 _animator.SetBool("OnJump", true);
                 _stateController.isGrounded = false;                
                 _rigidbody.velocity *= 1.15f;
                 _rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
                 _rigidbody.drag = 0f;
+                lastTimeJumped = Time.time;
+
+                Debug.Log("SALTO");
+                Debug.Log(_animator.GetBool("OnGround"));
             }
         }
 
