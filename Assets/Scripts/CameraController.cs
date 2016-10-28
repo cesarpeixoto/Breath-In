@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
     public float distance = 12f;
 
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
 	{
 		if (target != null)																		// Checa se a referencia não é nula.
 		{
