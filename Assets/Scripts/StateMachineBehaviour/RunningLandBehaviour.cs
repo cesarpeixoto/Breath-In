@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RunningLandBehaviour : StateMachineBehaviour
+public class JumpBehaviour : StateMachineBehaviour
 {
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //animator.GetComponent<EK.StateController>().ekState = EK.EKSubState.Jumping;
+        animator.GetComponent<EK.StateController>().ekState = EK.EKSubState.Jumping;
 
         animator.SetBool("OnJump", false);
 
