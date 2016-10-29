@@ -64,12 +64,15 @@ public class ClimbRopeMovimentState : IEKState
     {
         _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
         _animator.SetFloat("InputZ", Input.GetAxisRaw("Vertical"), 0.1f, Time.deltaTime);
+
+        
     }
 
     //---------------------------------------------------------------------------------------------------------------
+    
     public void OnActionController()
     {
-                        
+
         RopeClimbingInteractiveBehaviour.active = false;
         _stateController.Interaction = null;
         _stateController.transform.SetParent(null);
@@ -88,14 +91,20 @@ public class ClimbRopeMovimentState : IEKState
         //velocity *= velMagnitude * 3f;
         //Debug.Log(velocity);
 
+        Vector3 direction = ropeNode.velocity.normalized;
+        float speed = Mathf.Abs(ropeNode.transform.localPosition.x) - ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().xPosition;
 
-        Vector3 velocity = ropeNode.velocity * 3f;
+        Vector3 velocity = direction * speed * 5f;
+        velocity.x *= 3f;
         Debug.Log(velocity);
+        _stateController.defaultMovimentState.test = true;
         //_stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f);  
         _stateController.currentState = _stateController.defaultMovimentState;
         _stateController.GetComponent<Rigidbody>().velocity = velocity;
+        Debug.Log("Corpo " + _stateController.GetComponent<Rigidbody>().velocity);
         //_stateController.GetComponent<Rigidbody>().AddForce(new Vector3(velocity.x, velocity.y, velocity.z), ForceMode.Impulse);
-        _stateController.GetComponent<Rigidbody>().AddForce(velocity * 3f, ForceMode.Acceleration);
+        _stateController.GetComponent<Rigidbody>().AddForce(velocity, ForceMode.Acceleration);
+        Debug.Log("Corpo2 " + _stateController.GetComponent<Rigidbody>().velocity);
 
         //Onde estava isso???????
         _transform.FindChild("Mesh").localPosition = Vector3.zero;
@@ -119,6 +128,7 @@ public class ClimbRopeMovimentState : IEKState
         this.ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().DeativeCapsuleCollider(_stateController.GetComponent<CapsuleCollider>(), false);
         _stateController.climbRopeMovimentState.ropeNode = null;
         _transform.rotation.eulerAngles.Set(0, _rotationDefaultInY, 0);
+        
     }
 
 

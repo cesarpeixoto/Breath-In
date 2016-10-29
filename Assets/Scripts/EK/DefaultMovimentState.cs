@@ -99,6 +99,8 @@ namespace EK
             _animator.SetBool("OnCrouching", _stateController.isCrouching);
         }
         
+
+        public bool test = false;
         public void Update()
         {
             _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
@@ -113,22 +115,25 @@ namespace EK
                 _animator.SetBool("IsStoped", true);
             else
                 _animator.SetBool("IsStoped", false);
+
+
+            if (test)
+                Debug.Log(_rigidbody.velocity);
+
         }
 
 
         //FixedUpdate is called every fixed framerate frame.
         public void FixedUpdate()
         {
-            if(canmove)
+            if(canmove && _stateController.isGrounded)
             {
                 Vector3 vel = velocity * speed;
                 _stateController.transform.forward = Vector3.Slerp(_stateController.transform.forward, velocity.normalized, Time.fixedDeltaTime * 6.5f);
                 vel.y = _rigidbody.velocity.y;
                 _rigidbody.velocity = vel;
-            }
-
-            
-
+                canmove = false;
+            }            
         } 
 
         //---------------------------------------------------------------------------------------------------------------

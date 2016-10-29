@@ -7,8 +7,15 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 {
     public static bool active = false;
     public SphereCollider ropectrl = null;
-
+    public float xPosition = 0;
     bool moving = false;
+
+    protected override void Start()
+    {
+        base.Start();
+        xPosition = this.transform.localPosition.x;
+    }
+
 
     public override void SetInteractive(/*StateController controller*/)
     {
