@@ -60,8 +60,6 @@ namespace EK
         //---------------------------------------------------------------------------------------------------------------
         public void OnJumpController()
         {
-            // TODO: Estabelecer um tempo de intervalo entre os saltos???
-          
             if (_stateController.isGrounded && Time.time > lastTimeJumped + 0.2f)
             {
                 _animator.SetBool("OnJump", true);
