@@ -98,7 +98,6 @@ namespace EK
         }
         
 
-        public bool test = false;
         public void Update()
         {
             _animator.SetFloat("InputX", Input.GetAxisRaw("Horizontal"), 0.1f, Time.deltaTime);
@@ -113,10 +112,6 @@ namespace EK
                 _animator.SetBool("IsStoped", true);
             else
                 _animator.SetBool("IsStoped", false);
-
-
-            if (test)
-                Debug.Log(_rigidbody.velocity);
 
         }
 

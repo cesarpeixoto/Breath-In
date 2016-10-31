@@ -91,13 +91,11 @@ public class ClimbRopeMovimentState : IEKState
         //velocity *= velMagnitude * 3f;
         //Debug.Log(velocity);
 
-        Vector3 direction = ropeNode.velocity.normalized;
+        Vector3 direction = ropeNode.velocity.normalized + Vector3.up * 0.3f;
         float speed = Mathf.Abs(ropeNode.transform.localPosition.x) - ropeNode.GetComponent<RopeClimbingInteractiveBehaviour>().xPosition;
 
         Vector3 velocity = direction * speed * 5f;
         velocity.x *= 3f;
-        Debug.Log(velocity);
-        _stateController.defaultMovimentState.test = true;
         //_stateController.GetComponent<Rigidbody>().AddForce(velocity * 8f);  
         _stateController.currentState = _stateController.defaultMovimentState;
         _stateController.GetComponent<Rigidbody>().velocity = velocity;
