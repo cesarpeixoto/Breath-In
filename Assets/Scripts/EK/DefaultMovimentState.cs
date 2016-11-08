@@ -14,7 +14,7 @@ namespace EK
 
         // Atributos de movimento do EK
         private float speed = 3.2f;
-        private float jumpForce = 300.0f;
+        private float jumpForce = 450.0f;
 
         // Variáveis de auxilio
         private bool moveCondition = false;                                         // Condição para movimento.

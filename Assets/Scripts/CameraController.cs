@@ -12,8 +12,8 @@ public class CameraController : MonoBehaviour
 	{
 		if (target != null)																		// Checa se a referencia não é nula.
 		{
-            Vector3 destination = new Vector3(target.position.x,  transform.position.y, 		// Cria um vetor para posição de destino, mantendo o eixo z inalterado.
-                                                target.position.z + distance);
+            Vector3 destination = new Vector3(target.position.x - distance, target.position.y, 		// Cria um vetor para posição de destino, mantendo o eixo z inalterado.
+                                                target.position.z);
 			transform.position = Vector3.Lerp (transform.position, destination, movimentSpeed);	// Faz o movimento da Camera seguir para nova posição com fluidez, na velocidade de lerpSpeed.
 		}
 	}
