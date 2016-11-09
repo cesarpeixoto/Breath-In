@@ -202,7 +202,7 @@ namespace EK
             Vector3 offset = Vector3.up * 0.4f;
             int layer = 1 << 0;
             if (Physics.Raycast(_transform.position + offset + climbOffset, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
-          //  if (Physics.Raycast(_capsuleCollider.transform.position, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
+            //  if (Physics.Raycast(_capsuleCollider.transform.position, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
 
             {
                 this.isGrounded = true;
@@ -211,7 +211,11 @@ namespace EK
                 _rigidbody.drag = 1.8f;
             }
             else
+            {
                 this.isGrounded = false;
+                _rigidbody.drag = 0f;
+
+            }
             _animator.SetBool("OnGround", isGrounded);
             _animator.SetBool("OnFalling", !isGrounded);
 
