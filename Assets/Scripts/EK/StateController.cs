@@ -23,7 +23,7 @@ namespace EK
         public InteractiveHandle Interaction;
 
         // Flags auxiliares de Estado.
-        public bool OnGround = true;
+        //public bool OnGround = true;
         private float _groundDistance = 0.0f;
 
         public RaycastHit groundHit;
@@ -115,7 +115,7 @@ namespace EK
         private void FixedUpdate()
         {
             this.currentState.FixedUpdate();
-            CheckGroundStatus();
+            //CheckGroundStatus();
 
 
 
@@ -196,30 +196,30 @@ namespace EK
 
         //---------------------------------------------------------------------------------------------------------------
         // Checa e estabelece se o Player está em contato com o chão.
-        private void CheckGroundStatus()
-        {
-            RaycastHit hitInfo;
-            Vector3 offset = Vector3.up * 0.4f;
-            int layer = 1 << 0;
-            if (Physics.Raycast(_transform.position + offset + climbOffset, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
-            //  if (Physics.Raycast(_capsuleCollider.transform.position, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
+        //private void CheckGroundStatus()
+        //{
+        //    RaycastHit hitInfo;
+        //    Vector3 offset = Vector3.up * 0.4f;
+        //    int layer = 1 << 0;
+        //    if (Physics.Raycast(_transform.position + offset + climbOffset, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
+        //    //  if (Physics.Raycast(_capsuleCollider.transform.position, Vector3.down, out hitInfo, _capsuleCollider.height / 2, layer))
 
-            {
-                this.isGrounded = true;
-                _animator.SetBool("OnGround", isGrounded);
-                _animator.SetBool("OnFalling", !isGrounded);
-                _rigidbody.drag = 1.8f;
-            }
-            else
-            {
-                this.isGrounded = false;
-                _rigidbody.drag = 0f;
+        //    {
+        //        this.isGrounded = true;
+        //        _animator.SetBool("OnGround", isGrounded);
+        //        _animator.SetBool("OnFalling", !isGrounded);
+        //        _rigidbody.drag = 1.8f;
+        //    }
+        //    else
+        //    {
+        //        this.isGrounded = false;
+        //        _rigidbody.drag = 0f;
 
-            }
-            _animator.SetBool("OnGround", isGrounded);
-            _animator.SetBool("OnFalling", !isGrounded);
+        //    }
+        //    _animator.SetBool("OnGround", isGrounded);
+        //    _animator.SetBool("OnFalling", !isGrounded);
 
-        }
+        //}
 
         //---------------------------------------------------------------------------------------------------------------
         // Checa e estabelece se o Player está em contato com o chão e qual a distancia.
@@ -227,24 +227,42 @@ namespace EK
         private void CheckGroundDistance()
         {            
             float radius = _capsuleCollider.radius * 0.9f;                                          // Raio 10% menor que do capsule colider.            
+            Vector3 offset = Vector3.up * 0.025f;
             Vector3 spherePosition = _transform.position + (Vector3.up * _capsuleCollider.radius);  // Posição de origem para o SphereCast de acordo com CapsuleCollider
-            Ray sphereRay = new Ray(spherePosition, Vector3.down);
+            Ray sphereRay = new Ray(spherePosition + climbOffset -offset, Vector3.down);
 
-            if (Physics.SphereCast(sphereRay, radius, out this.groundHit, 0.03f))                         // Checa se o personagem está em alguma superficie.
+            int layer = 1 << 0;
+            if (Physics.SphereCast(sphereRay, radius, out this.groundHit, 0.03f, layer))                         // Checa se o personagem está em alguma superficie.
             {
-                this.OnGround = true;
+                this.isGrounded = true;
+                _animator.SetBool("OnGround", isGrounded);
+                _animator.SetBool("OnFalling", !isGrounded);
+                _rigidbody.drag = 1.8f;
+
+                //this.OnGround = true;
                 _groundDistance = 0.0f;
             }
             else
             {
+
+                this.isGrounded = false;
+                _rigidbody.drag = 0f;
+
+                //_animator.SetBool("OnGround", isGrounded);
+                _animator.SetBool("OnFalling", !isGrounded);
+
                 Ray distanceRay = new Ray(_transform.position, Vector3.down);
-                if (Physics.Raycast(distanceRay, out this.groundHit, 2f))
+                if (Physics.Raycast(distanceRay, out this.groundHit, 2f, layer))
                     _groundDistance = this.groundHit.distance;
                 else
                     _groundDistance = 2f;
             }
+
+            //_animator.SetBool("OnGround", isGrounded);
+            //_animator.SetBool("OnFalling", !isGrounded);
+
 #if UNITY_EDITOR
-            DebugSpherePosition = spherePosition;
+            DebugSpherePosition = spherePosition + climbOffset - offset;
             DebugSphereRadius = radius;
 #endif
         }

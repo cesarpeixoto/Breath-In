@@ -14,7 +14,7 @@ namespace EK
 
         // Atributos de movimento do EK
         private float speed = 3.2f;
-        private float jumpForce = 380.0f;
+        private float jumpForce = 360.0f;
 
         // Variáveis de auxilio
         private bool moveCondition = false;                                         // Condição para movimento.
@@ -43,9 +43,9 @@ namespace EK
         {
             // Estabelece a condição de movimento.
             moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
-                            _stateController.ekState != EKSubState.Falling && _stateController.ekState != EKSubState.Jumping;
+                            _stateController.ekState != EKSubState.Falling; // && _stateController.ekState != EKSubState.Jumping;
 
-            if (_stateController.isGrounded && moveCondition)
+            if (/*_stateController.isGrounded && */moveCondition)
             {
                 velocity = direction;
                 canmove = true;
@@ -67,6 +67,7 @@ namespace EK
                 _rigidbody.velocity *= 1.15f;
                 _rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
                // _rigidbody.drag = 0f;
+                Debug.Log(_rigidbody.drag);
                 lastTimeJumped = Time.time;
 
             }
@@ -117,7 +118,7 @@ namespace EK
         //FixedUpdate is called every fixed framerate frame.
         public void FixedUpdate()
         {
-            if(canmove && _stateController.isGrounded)
+            if(canmove /*&& _stateController.isGrounded*/)
             {
                 Vector3 vel = velocity * speed;
                 _stateController.transform.forward = Vector3.Slerp(_stateController.transform.forward, velocity.normalized, Time.fixedDeltaTime * 6.5f);
