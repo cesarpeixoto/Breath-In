@@ -14,7 +14,7 @@ namespace EK
 
         // Atributos de movimento do EK
         private float speed = 3.2f;
-        private float jumpForce = 300.0f;
+        private float jumpForce = 380.0f;
 
         // Variáveis de auxilio
         private bool moveCondition = false;                                         // Condição para movimento.
@@ -66,11 +66,9 @@ namespace EK
                 _stateController.isGrounded = false;                
                 _rigidbody.velocity *= 1.15f;
                 _rigidbody.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
-                _rigidbody.drag = 0f;
+               // _rigidbody.drag = 0f;
                 lastTimeJumped = Time.time;
 
-                Debug.Log("SALTO");
-                Debug.Log(_animator.GetBool("OnGround"));
             }
         }
 
