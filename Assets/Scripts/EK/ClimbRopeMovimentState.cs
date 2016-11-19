@@ -28,16 +28,16 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void OnMovimentController(Vector3 direction)
     {
-        if(direction.z != 0)                                                            // Move o player no sentido vertical.
+        if(direction.x != 0)                                                            // Move o player no sentido vertical.
         {
-            direction.z *= Time.deltaTime * _speed * -1f;
+            direction.x *= Time.deltaTime * _speed;
 
             if (_stateController.isGrounded && (direction.z < 0))
             {
                 
             }
             else
-                _transform.Translate(0, direction.z, 0, Space.Self);
+                _transform.Translate(0, direction.x, 0, Space.Self);
 
             _inNodeY = _transform.position.y;                                           // Armazena posição global no eixo Y pós movimento.
             _transform.localPosition = Vector3.zero;                                    // Armazena posição global, no centro do node.
@@ -45,9 +45,9 @@ public class ClimbRopeMovimentState : IEKState
             _inNodePosition.y = _inNodeY;
             _transform.position = _inNodePosition;                                      // Atualiza a posição global.
         }            
-        if(direction.x != 0)
+        if(direction.z != 0)
             if(this.ropeNode)
-                this.ropeNode.AddForce(new Vector3(direction.x * 15f, 0, 0));           // impõe forca no node da corda para balança-la.
+                this.ropeNode.AddForce(new Vector3(0, 0, direction.z * 15f));           // impõe forca no node da corda para balança-la.
     }
 
     //---------------------------------------------------------------------------------------------------------------
