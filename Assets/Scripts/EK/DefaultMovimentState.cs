@@ -43,7 +43,7 @@ namespace EK
         {
             // Estabelece a condição de movimento.
             moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
-                            _stateController.ekState != EKSubState.Falling; // && _stateController.ekState != EKSubState.Jumping;
+                            _stateController.ekState != EKSubState.Falling  && _stateController.ekState != EKSubState.Dead;
 
             if (/*_stateController.isGrounded && */moveCondition)
             {
@@ -60,7 +60,11 @@ namespace EK
         //---------------------------------------------------------------------------------------------------------------
         public void OnJumpController()
         {
-            if (_stateController.isGrounded && Time.time > lastTimeJumped + 0.2f)
+            moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
+                            _stateController.ekState != EKSubState.Falling && _stateController.ekState != EKSubState.Dead
+                            && _stateController.ekState != EKSubState.Jumping;
+
+            if (_stateController.isGrounded && Time.time > lastTimeJumped + 0.2f && moveCondition)
             {
                 _animator.SetBool("OnJump", true);
                 _stateController.isGrounded = false;                

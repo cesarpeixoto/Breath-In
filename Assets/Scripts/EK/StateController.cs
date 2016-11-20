@@ -13,7 +13,7 @@ using System.Collections;
 
 namespace EK
 {
-    public enum EKSubState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling, Draging }
+    public enum EKSubState { Idle, Runing, Jumping, Standing, Crouching, Crouched, Falling, Draging, Dead }
     public enum EKTrasitionState { None, BeginDrag }
 
     public class StateController : MonoBehaviour
@@ -21,6 +21,14 @@ namespace EK
         // Callback das ações de iteração.
         public delegate void InteractiveHandle();
         public InteractiveHandle Interaction;
+
+        public delegate void UIHandle(float f);
+        public static event UIHandle OnSetEnergy;
+        public static event UIHandle OnSetBreath;
+
+        bool win = false;
+        public float breathTime = 0.0f;
+        private float breathTimeCount = 0.0f;
 
         // Flags auxiliares de Estado.
         //public bool OnGround = true;
@@ -82,7 +90,7 @@ namespace EK
 
         // Use this for initialization
         void Awake()
-        {
+        {            
             _transform = GetComponent<Transform>();
             _rigidbody = GetComponent<Rigidbody>();
             _animator = GetComponent<Animator>();
@@ -93,6 +101,12 @@ namespace EK
             this.currentState = this.defaultMovimentState;
             this.dragMovimentState = new DragMovimentState(this);
             this.climbRopeMovimentState = new ClimbRopeMovimentState(this);
+        }
+
+        void Start()
+        {
+            breathTimeCount = breathTime;
+            StartCoroutine(BreathClock());
         }
 
         public void OnActionController()
@@ -147,9 +161,29 @@ namespace EK
                 return false;
         }
 
-        
+        private IEnumerator BreathClock()
+        {
+            while (breathTimeCount > 0 && !win) 
+            {
+                breathTimeCount -= Time.deltaTime;
+                if (breathTimeCount < 0)
+                    breathTimeCount = 0;
 
-        
+                OnSetBreath(breathTimeCount / breathTime);
+                yield return null;
+            }
+            if(win)
+            {
+                // mensagem que ganhou
+            }
+            else
+            {
+                ekState = EKSubState.Dead;
+                _animator.SetBool("Dead", true);
+            }
+        }
+
+
 
         public Transform getTransform()
         {
