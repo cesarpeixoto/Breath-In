@@ -11,7 +11,7 @@ public class HudController : MonoBehaviour
 
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         EK.StateController.OnSetBreath += SetBreath;
         EK.StateController.OnSetEnergy += SetEnergy;
