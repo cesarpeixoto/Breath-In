@@ -183,6 +183,20 @@ namespace EK
             }
         }
 
+        public IEnumerator EnergyClock()
+        {
+            _animator.SetBool("Interact", true);
+            ekState = EK.EKSubState.Dead;
+            while (_animator.GetFloat("InteractCurve") < 1f)
+            {
+                OnSetEnergy(_animator.GetFloat("InteractCurve"));
+                yield return null;
+            }
+
+            ekState = EK.EKSubState.Idle;
+            _animator.SetBool("Interact", false);
+        }
+
 
 
         public Transform getTransform()
