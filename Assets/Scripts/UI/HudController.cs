@@ -27,8 +27,8 @@ public class HudController : MonoBehaviour
 
     private void ActiveEnergy(float value)
     {
-        bool act;
-        if (value == 0)
+        bool act = false;
+        if (value == 0f)
             act = false;
         else
             act = true;

@@ -31,6 +31,7 @@ public class ClimbRopeMovimentState : IEKState
     public void OnMovimentController(Vector3 direction)
     {
         this.direction = direction;
+        Camera.main.GetComponent<CameraController>().offset = 0f;
         if(direction.x != 0)                                                            // Move o player no sentido vertical.
         {
             direction.x *= Time.deltaTime * _speed;
@@ -115,6 +116,7 @@ public class ClimbRopeMovimentState : IEKState
 
         _stateController.StartChildCoroutine(ReactiveRopeCollision());
         _stateController.GetComponent<Rigidbody>().velocity = velocity;
+        Camera.main.GetComponent<CameraController>().offset = 3f;
     }
 
     //public void ReactiveRopeCollision()

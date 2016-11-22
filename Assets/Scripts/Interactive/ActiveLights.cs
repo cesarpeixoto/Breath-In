@@ -44,7 +44,7 @@ public class ActiveLights : InteractiveBehaviour
             light2.SetActive(true);
             Destroy(_controller.carryingObject);
             _controller.carryingObject = null;
-
+            _controller.LightAct(0f);
             _controller.Interaction = null;
             _controller = null;
             Active = false;

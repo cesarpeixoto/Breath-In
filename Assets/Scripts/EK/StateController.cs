@@ -202,6 +202,8 @@ namespace EK
         public void LightAct(float value)
         {
             OnEnergyActive(value);
+            if(value == 0f)
+                OnSetEnergy(0f);
         }
 
 
