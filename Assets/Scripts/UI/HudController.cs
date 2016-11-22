@@ -15,12 +15,24 @@ public class HudController : MonoBehaviour
     {
         EK.StateController.OnSetBreath += SetBreath;
         EK.StateController.OnSetEnergy += SetEnergy;
+        EK.StateController.OnEnergyActive += ActiveEnergy;
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+
+    private void ActiveEnergy(float value)
+    {
+        bool act;
+        if (value == 0)
+            act = false;
+        else
+            act = true;
+        HudEnergyController.Activad(act);
     }
 
     private void SetEnergy(float value)

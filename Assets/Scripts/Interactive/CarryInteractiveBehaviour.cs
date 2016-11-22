@@ -30,7 +30,9 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
         _controller.carryingObject = this.gameObject;
         //_controller.carryingObject.transform.SetParent(_transform);
         _controller.carryingObject.SetActive(false);
-       // _controller.Interaction = null;
+        // _controller.Interaction = null;
+        _controller.LightAct(1f);
+        _controller.Interaction = null;
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -50,7 +52,11 @@ public class CarryInteractiveBehaviour : InteractiveBehaviour
     protected override void OnDestroy()
     {
         if (_controller != null)
+        {
             _controller.carryingObject = null;
+            _controller.LightAct(0f);
+        }
+            
         base.OnDestroy();
     }
     //---------------------------------------------------------------------------------------------------------------

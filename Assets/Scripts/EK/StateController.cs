@@ -24,6 +24,7 @@ namespace EK
 
         public delegate void UIHandle(float f);
         public static event UIHandle OnSetEnergy;
+        public static event UIHandle OnEnergyActive;
         public static event UIHandle OnSetBreath;
 
         bool win = false;
@@ -183,18 +184,24 @@ namespace EK
             }
         }
 
-        public IEnumerator EnergyClock()
+        public IEnumerator EnergyClock(bool energy = true)
         {
             _animator.SetBool("Interact", true);
             ekState = EK.EKSubState.Dead;
             while (_animator.GetFloat("InteractCurve") < 1f)
             {
-                OnSetEnergy(_animator.GetFloat("InteractCurve"));
+                if(energy)
+                    OnSetEnergy(_animator.GetFloat("InteractCurve"));
                 yield return null;
             }
 
             ekState = EK.EKSubState.Idle;
             _animator.SetBool("Interact", false);
+        }
+
+        public void LightAct(float value)
+        {
+            OnEnergyActive(value);
         }
 
 

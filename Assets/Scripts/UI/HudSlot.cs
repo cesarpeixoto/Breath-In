@@ -20,6 +20,11 @@ public class HudSlot : MonoBehaviour
 
     }
 
+    public void Activad(bool state)
+    {
+        activeObjects[0].SetActive(state);
+    }
+
     public void Status(bool newState)
     {
         foreach (var item in activeObjects)

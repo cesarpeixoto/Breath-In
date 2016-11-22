@@ -13,6 +13,8 @@ public class ClimbRopeMovimentState : IEKState
     private float _rotationDefaultInY = 0.0f;
     private float _inNodeY = 0.0f;
 
+
+    Vector3 direction = Vector3.zero;
     private Transform _transform = null;
     private Animator _animator = null;
 
@@ -28,6 +30,7 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void OnMovimentController(Vector3 direction)
     {
+        this.direction = direction;
         if(direction.x != 0)                                                            // Move o player no sentido vertical.
         {
             direction.x *= Time.deltaTime * _speed;
@@ -150,6 +153,11 @@ public class ClimbRopeMovimentState : IEKState
     //---------------------------------------------------------------------------------------------------------------
     public void OnJumpController()
     {
+        //_animator.SetBool("OnJump", true);
+        _stateController.isGrounded = false;
+        _stateController.getRigidbody().velocity *= 1.15f;
+        _stateController.getRigidbody().AddForce(new Vector3(direction.x * 100f, 200, direction.z), ForceMode.Impulse);
+        OnActionController();
     }
     
     
