@@ -6,6 +6,7 @@ public class CameraLookEffect : MonoBehaviour {
     Transform _transform;
     public Transform playerCenter, playerTop, playerBotton;
     List<Renderer> modifiedRenderers = new List<Renderer>();
+    public LayerMask affectedLayers;
 
 	void Start () {
         _transform = transform;
@@ -21,15 +22,18 @@ public class CameraLookEffect : MonoBehaviour {
 
         foreach(RaycastHit hit in Physics.RaycastAll(_transform.position, dirTop, dist))
         {
-            hits.Add(hit);
+            if(hit.collider.gameObject.layer == affectedLayers)
+                hits.Add(hit);
         }
         foreach (RaycastHit hit in Physics.RaycastAll(_transform.position, dirCenter, dist))
         {
-            hits.Add(hit);
+            if (hit.collider.gameObject.layer == affectedLayers)
+                hits.Add(hit);
         }
         foreach (RaycastHit hit in Physics.RaycastAll(_transform.position, dirBotton, dist))
         {
-            hits.Add(hit);
+            if (hit.collider.gameObject.layer == affectedLayers)
+                hits.Add(hit);
         }
 
 

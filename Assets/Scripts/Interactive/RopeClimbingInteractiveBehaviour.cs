@@ -19,6 +19,7 @@ public class RopeClimbingInteractiveBehaviour : InteractiveBehaviour
 
     public override void SetInteractive(/*StateController controller*/)
     {
+        Debug.Log(_controller);
         DeativeCapsuleCollider(_controller.GetComponent<CapsuleCollider>());
         _controller.transform.SetParent(this.transform);
         _controller.GetComponent<Rigidbody>().isKinematic = true;        

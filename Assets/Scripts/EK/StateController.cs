@@ -26,6 +26,7 @@ namespace EK
         public static event UIHandle OnSetEnergy;
         public static event UIHandle OnEnergyActive;
         public static event UIHandle OnSetBreath;
+        public LayerMask whatIsGround;
 
         bool win = false;
         public float breathTime = 0.0f;
@@ -288,8 +289,8 @@ namespace EK
             Vector3 spherePosition = _transform.position + (Vector3.up * _capsuleCollider.radius);  // Posição de origem para o SphereCast de acordo com CapsuleCollider
             Ray sphereRay = new Ray(spherePosition + climbOffset -offset, Vector3.down);
 
-            int layer = 1 << 0;
-            if (Physics.SphereCast(sphereRay, radius, out this.groundHit, 0.03f, layer))                         // Checa se o personagem está em alguma superficie.
+           // int layer = 1 << 0;
+            if (Physics.SphereCast(sphereRay, radius, out this.groundHit, 0.03f, whatIsGround))                         // Checa se o personagem está em alguma superficie.
             {
                 this.isGrounded = true;
                 _animator.SetBool("OnGround", isGrounded);
@@ -309,7 +310,7 @@ namespace EK
                 _animator.SetBool("OnFalling", !isGrounded);
 
                 Ray distanceRay = new Ray(_transform.position, Vector3.down);
-                if (Physics.Raycast(distanceRay, out this.groundHit, 2f, layer))
+                if (Physics.Raycast(distanceRay, out this.groundHit, 2f, whatIsGround))
                     _groundDistance = this.groundHit.distance;
                 else
                     _groundDistance = 2f;
