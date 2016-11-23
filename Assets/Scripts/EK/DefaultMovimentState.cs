@@ -60,9 +60,9 @@ namespace EK
         //---------------------------------------------------------------------------------------------------------------
         public void OnJumpController()
         {
-            moveCondition = _stateController.ekState != EKSubState.Crouching && _stateController.ekState != EKSubState.Standing &&
-                            _stateController.ekState != EKSubState.Falling && _stateController.ekState != EKSubState.Dead
-                            && _stateController.ekState != EKSubState.Jumping;
+			moveCondition = _stateController.ekState != EKSubState.Crouched && _stateController.ekState != EKSubState.Standing &&
+			_stateController.ekState != EKSubState.Falling && _stateController.ekState != EKSubState.Dead;
+                            //&& _stateController.ekState != EKSubState.Jumping;
 
             if (_stateController.isGrounded && Time.time > lastTimeJumped + 0.2f && moveCondition)
             {

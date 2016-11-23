@@ -295,7 +295,8 @@ namespace EK
                 this.isGrounded = true;
                 _animator.SetBool("OnGround", isGrounded);
                 _animator.SetBool("OnFalling", !isGrounded);
-                _rigidbody.drag = 1.8f;
+				//_animator.SetBool("OnJump", false);
+				_rigidbody.drag = 1.8f;
 
                 //this.OnGround = true;
                 _groundDistance = 0.0f;
@@ -308,6 +309,7 @@ namespace EK
 
                 //_animator.SetBool("OnGround", isGrounded);
                 _animator.SetBool("OnFalling", !isGrounded);
+
 
                 Ray distanceRay = new Ray(_transform.position, Vector3.down);
                 if (Physics.Raycast(distanceRay, out this.groundHit, 2f, whatIsGround))
